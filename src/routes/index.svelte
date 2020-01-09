@@ -1,28 +1,23 @@
 <script context="module">
 import qs from 'qs'
+import Corpus from '../models/Corpus'
 
 const defaultGrammar = {
 	$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
 
 	animal: {
-		category: 'animals',
-		subcategoryOrFile: 'common',
-		file: '',
-		key: 'animals'
+		f: ['animals', 'common'],
+		d: [{ name: 'key', selected: 'animals' }]
 	},
 
 	veggie: {
-		category: 'foods',
-		subcategoryOrFile: 'vegetables',
-		file: '',
-		key: 'vegetables'
+		f: ['foods', 'vegetables'],
+		d: [{ name: 'key', selected: 'vegetables' }]
 	},
 
 	cute: {
-		category: 'words',
-		subcategoryOrFile: 'emoji/',
-		file: 'cute_kaomoji',
-		key: 'cuteKaomoji'
+		f: ['words', 'emoji', 'cute_kaomoji'],
+		d: [{ name: 'key', selected: 'cuteKaomoji' }]
 	}
 }
 
@@ -35,28 +30,23 @@ export async function preload(page, session) {
 
 	const queryGrammar = {}
 
-	// if (Object.entries(preloadGrammar).length > 0) {
-		const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
-			if (k === '$TEMPLATE$') return [k, [v]]
-			const { category, subcategoryOrFile, file, key, objectKey } = v
-			const data = await this.fetch(`/corpora/data/${category}/${subcategoryOrFile}${file}.json`)
-			const json = await data.json()
+	const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
+		if (k === '$TEMPLATE$') return [k, v]
+		const { f, d } = v
 
-			let corpus = json
+		const res = await this.fetch(`/corpora/data/${f.join('/')}.json`)
+		const json = await res.json()
 
-			if (key === 0) key = Object.keys(json)[0]
+		const corpus = new Corpus({
+			rawData: json,
+			filePath: f,
+			path: d
+		})
 
-			if (key) corpus = json[key]
+		return [k, corpus]
+	}))
 
-			if (objectKey && objectKey !== 'all') {
-				corpus = corpus.filter(x => x[objectKey]).flatMap(x => x[objectKey]) 
-			}
-
-			return [k, corpus]
-		}))
-
-		promises.forEach(([k, v]) => queryGrammar[k] = v)
-	// }
+	promises.forEach(([k, v]) => queryGrammar[k] = v)
 
 	const data = await this.fetch('/corpora/data.json')
 	const categories = await data.json()
@@ -70,8 +60,7 @@ import tracery from 'tracery-grammar'
 import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
-import CorporaPicker from '../components/CorporaPicker.svelte'
-import CorporaPicker2 from '../components/CorporaPicker2.svelte'
+import CorporaPicker3 from '../components/CorporaPicker3.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
 
 export let categories, preloadGrammar = {}, queryGrammar = {}
@@ -81,12 +70,14 @@ let generated = ''
 const corporaTokens = preloadGrammar
 
 const rawGrammar = writable({
-	$TEMPLATE$: [preloadGrammar.$TEMPLATE$ || 'Hello!'],
+	$TEMPLATE$: [preloadGrammar['$TEMPLATE$'] || 'Hello!'],
 	$ORIGIN$: ['#[#$ACTIONS$#]$TEMPLATE$#']
 })
 
 Object.entries(queryGrammar).forEach(([name, corpus]) => {
-	addToGrammar({ name, corpus })
+	if (name !== '$TEMPLATE$') {
+		addToGrammar({ name, corpus })
+	}
 })
 
 const grammar = derived(rawGrammar, $rawGrammar => {
@@ -112,24 +103,31 @@ const grammar = derived(rawGrammar, $rawGrammar => {
 	return g
 })
 
-function addToGrammar({ name, selected, corpus }) {
-	if (selected) corporaTokens[name] = selected
+function addToGrammar({ name, corpus }) {
+	const { filePath, path, data } = corpus
 
-	if (typeof corpus[0] === 'object') {
+	corporaTokens[name] = { 
+		f: filePath,
+		d: path.map(({ name, selected }) => ({ name, selected }))
+	}
+
+	if (typeof data[0] === 'object') {
 		const actionName = `_${name}`
-		const mapped = corpus.map(choice => {
+		const mapped = data.map(choice => {
 			return Object.entries(choice)
 						 .map(([k, v]) => `[${name}-${k}:${v}]`)
 						 .join('')
 		})
 
 		$rawGrammar[actionName] = mapped
-		// $rawGrammar.actions[0] += `[#${actionName}#]`
 	}
 
 	else {
-		$rawGrammar[name] = corpus
+		$rawGrammar[name] = data
 	}
+}
+
+function getQueryString() {
 
 }
 
@@ -246,7 +244,7 @@ button::before, button::after {
 	</header>
 
 	<div class="explorer">
-		<CorporaPicker2
+		<CorporaPicker3
 			{categories}
 			on:addToGrammar={e => addToGrammar(e.detail)}
 			/>
@@ -274,6 +272,6 @@ button::before, button::after {
 			<div class="generated">{generated}</div>
 		</div>
 
-		<p style="text-align: center"><a href={`?${qs.stringify({$TEMPLATE$: $rawGrammar.$TEMPLATE$[0], ...corporaTokens})}`}>permalink to tokens + template<br>(copy to share)</a></p>
+		<p style="text-align: center"><a href={`?${qs.stringify({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})}`}>permalink to tokens + template<br>(copy to share)</a></p>
 	</div>
 </div>
