@@ -15,12 +15,9 @@ function removeFromGrammar(key) {
   dispatch('removeFromGrammar', key) 
 }
 
-function formatCorporaLocation({ category, subcategoryOrFile, file, key, objectKey }) {
-  let location = `${category} › ${subcategoryOrFile}`
-  if (file) location += ` › ${file}`
-  if (key) location += ` › ${key}`
-  if (objectKey && objectKey != 'all') location += ` › ${objectKey}`
-  return location
+function formatCorporaLocation({ f, d }) {
+  const j = ' › '
+  return [f.join(j), d.map(x => x.selected).join(j)].join(j)
 }
 
 $: entries = Object.entries(rawGrammar).filter(([k, v]) => !/^\$[A-Z]+\$$/.test(k))

@@ -99,6 +99,9 @@ const grammar = derived(rawGrammar, $rawGrammar => {
 	})
 
 	g.addModifiers(tracery.baseEngModifiers)
+	g.addModifiers({
+		lowercase: s => s.toLowerCase()
+	})
 
 	return g
 })
