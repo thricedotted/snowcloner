@@ -74,8 +74,14 @@ function convertToStructured(e, pickerIndex) {
     selected: 'all'
   }
 
+  console.log('path before', dataPath)
+  console.log('data before', data)
+
   dataPath = corpus.updatePath(dataPath)
   data = corpus.data
+
+  console.log('path after', dataPath)
+  console.log('data after', data)
 }
 
 function addToGrammar(e) {

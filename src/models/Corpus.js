@@ -27,13 +27,13 @@ export default class Corpus {
     const entries = Object.entries(d).filter(([k, v]) => dataKeys.includes(k))
 
     const childTypes = new Set(entries.map(([k, v]) => Array.isArray(v) ? 'array' : typeof v))
-    const grandchildTypes = new Set(entries.flatMap(([k, v]) => v).map(v => Array.isArray(v) ? 'array' : typeof v))
+    // const grandchildTypes = new Set(entries.flatMap(([k, v]) => v).map(v => Array.isArray(v) ? 'array' : typeof v))
 
     // console.log(childTypes, grandchildTypes)
 
     let sharedStructure = false
 
-    if (childTypes.size == 1 && childTypes.has('object')) {
+    if (childTypes.size === 1 && childTypes.has('object')) {
       const keys = entries.map(([k, v]) => Object.keys(v))
 
       for (let i = 1; i < keys.length; i++) {
@@ -79,7 +79,7 @@ export default class Corpus {
     let d = this.rawData
 
     if (this.path.length > 0 && this.path[0].name === 'filter') {
-      d = this._processObj(d, 0)
+      d = this._processObj(d, -1)
     }
 
     this.path.forEach(({ name, selected }, i) => {
@@ -87,7 +87,7 @@ export default class Corpus {
         d = d[selected]
       }
 
-      else if (name === 'filter' && selected && selected != 'all') {
+      else if (name === 'filter' && selected && selected !== 'all') {
         d = d.flatMap(x => x[selected]).filter(x => x)
       }
 
@@ -95,13 +95,12 @@ export default class Corpus {
       if (!Array.isArray(d)) {
         d = this._processObj(d, i)
       }
-
     })
 
     while (!Array.isArray(d) && typeof d === 'object') {
       const dataKeys = Corpus.filterDataKeys(d)
 
-      if (dataKeys.length == 1) {
+      if (dataKeys.length === 1) {
         this.path = [...this.path, {
           name: 'key',
           options: dataKeys,
@@ -128,6 +127,7 @@ export default class Corpus {
           break
         }
       }
+
       else {
         // this is some weird empty object. let's heck out of here.
         d = ['(empty data)']

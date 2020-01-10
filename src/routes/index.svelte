@@ -130,6 +130,12 @@ function addToGrammar({ name, corpus }) {
 	}
 }
 
+function copyToClipboard(e) {
+	e.target.focus()
+	e.target.select()
+	document.execCommand('copy')
+}
+
 async function clone() {
 	await tick()
 	return $grammar.flatten('#$ORIGIN$#')
@@ -203,9 +209,29 @@ h1 {
 .generate {
 	background: var(--color-primary-dark);
 	color: var(--color-bg);
-	padding: 1rem;
+	padding: 1rem 1rem 0 1rem;
 	border-radius: 0.2rem;
+}
+
+.generated {
 	white-space: pre-wrap;
+}
+
+.editor {
+	margin-top: calc(3 * var(--double-gap));
+}
+
+.editor::before {
+	content: ' ';
+	font-size: 1.2rem;
+	position: relative;
+	display: block;
+	width: 100%;
+	text-align: center;
+	margin: auto;
+	border: 1px dashed var(--color-primary-dark);
+	margin-bottom: calc(2 * var(--double-gap));
+	opacity: 0.5;
 }
 
 textarea {
@@ -223,13 +249,19 @@ textarea:focus {
 button {
 	position: relative;
 	display: block;
-	margin: var(--double-gap) auto calc(var(--double-gap) + 0.2rem) auto;
+	margin: auto;
+	top: 1rem;
+	padding: var(--shim) var(--double-gap);
 }
 
-button::before, button::after {
-	content: '↓';
-	margin: 0 var(--shim);
-	opacity: 0.9;
+.share {
+	font-size: var(--font-smallest);
+}
+
+.share input {
+	width: 100%;
+	user-select: all;
+	text-overflow: ellipsis;
 }
 </style>
 
@@ -250,27 +282,38 @@ button::before, button::after {
 	</div>
 
 	<div class="compose">
-		<div class="grammar">
-			<GrammarSummary 
-				rawGrammar={$rawGrammar} 
-				{corporaTokens}
-				on:removeFromGrammar={e => $rawGrammar[e.detail] = undefined}
-				/>
+		<div class="generate">
+			<div class="generated">{generated}</div>
+			<button on:click={async () => generated = await clone()}>generate!</button>
 		</div>
 
-		<div class="template">
-			<h2>Template</h2>
+		<div class="editor">
+			<div class="grammar">
+				<GrammarSummary 
+					rawGrammar={$rawGrammar} 
+					{corporaTokens}
+					on:removeFromGrammar={e => $rawGrammar[e.detail] = undefined}
+					/>
+			</div>
+
 			<textarea
 				bind:value={$rawGrammar.$TEMPLATE$[0]}
 				spellcheck="false"
 				></textarea>
-			<button on:click={async () => generated = await clone()}>generate!</button>
+
 		</div>
 
-		<div class="generate">
-			<div class="generated">{generated}</div>
-		</div>
+		{#if typeof location !== 'undefined'}
+			<div class="share">
+				<b>Wanna share your snowclone? Copy the link below!</b><br>
+				<input 
+					on:click={copyToClipboard}
+					readonly 
+					value={`${location.origin}?${qs.stringify({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})}`}
+					>
+			</div>
+		{/if}
 
-		<p style="text-align: center"><a href={`?${qs.stringify({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})}`}>permalink to tokens + template<br>(copy to share)</a></p>
+		<!-- <p style="text-align: center"><a href={`?${qs.stringify({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})}`}>permalink to tokens + template<br>(copy to share)</a></p> -->
 	</div>
 </div>

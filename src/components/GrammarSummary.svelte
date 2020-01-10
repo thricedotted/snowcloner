@@ -77,7 +77,7 @@ button:hover, button:focus {
 </style>
 
 <details open>
-<summary><h2>Tokens</h2> ({entries.length})</summary>
+<summary><h2>Grammar</h2> ({entries.length})</summary>
 
 {#if entries.length == 0}
   <p class="empty-grammar">Add tokens using the <b>corpora explorer</b>!</p>
