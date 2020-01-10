@@ -130,10 +130,6 @@ function addToGrammar({ name, corpus }) {
 	}
 }
 
-function getQueryString() {
-
-}
-
 async function clone() {
 	await tick()
 	return $grammar.flatten('#$ORIGIN$#')
