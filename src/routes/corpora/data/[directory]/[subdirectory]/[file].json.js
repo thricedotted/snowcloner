@@ -1,4 +1,4 @@
-import corpora from 'corpora-project'
+import corpora from '../../../_corpora-project'
 
 export function get(req, res, next) {
   const { directory, subdirectory, file } = req.params
