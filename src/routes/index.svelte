@@ -60,7 +60,7 @@ import tracery from 'tracery-grammar'
 import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
-import CorporaPicker3 from '../components/CorporaPicker3.svelte'
+import CorporaPicker from '../components/CorporaPicker.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
 
 export let categories, preloadGrammar = {}, queryGrammar = {}
@@ -275,7 +275,7 @@ button {
 	</header>
 
 	<div class="explorer">
-		<CorporaPicker3
+		<CorporaPicker
 			{categories}
 			on:addToGrammar={e => addToGrammar(e.detail)}
 			/>

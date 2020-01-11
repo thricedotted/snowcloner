@@ -1,134 +1,91 @@
 <script>
 import { createEventDispatcher } from 'svelte'
 
+import Corpus from '../models/Corpus'
+
 import Picker from './Picker.svelte'
 import CorpusSummary from './CorpusSummary.svelte'
 
-export let categories
-
 const dispatch = createEventDispatcher()
 
-const selected = {
-  category: '',
-  subcategoryOrFile: '',
-  file: '',
-  key: '',
-  objectKey: ''
-}
+export let categories = []
 
-let subcategories = [], files = [], fileData = {}
-let name = ''
-let detailsOpen = true
+let name = '', detailsOpen = true
 
-$: keys = Array.isArray(fileData) ? [] : filterDataKeys(fileData)
-$: placeholder = selected.objectKey && selected.objectKey != 'all' ? `${selected.key}-${selected.objectKey}` : selected.key
-$: corpus = getCorpus(fileData, selected.key)
-$: filteredCorpus = selected.objectKey && selected.objectKey !== 'all'
-                    ? corpus.filter(x => x[selected.objectKey]).flatMap(x => x[selected.objectKey]) 
-                    : corpus
-
-function getCorpus(data, key) {
-  // TODO: ok there's some real slop one out stuff going on here.
-  // the `key` arg is never used directly.
-  // it is there so that this function updates reactively.
-  // that is the only reason. :|
-  let processed = []
-
-  if (Array.isArray(data)) {
-    processed = data
+let filePath = [
+  {
+    name: 'category',
+    options: categories,
+    selected: ''
   }
+]
 
-  else if (filterDataKeys(data).length == 1) {
-    selected.key = filterDataKeys(data)[0]
-  }
+let dataPath = [], data = []
 
-  if (selected.key) {
-    const keyedData = fileData[selected.key]
+let corpus = null
 
-    if (Array.isArray(keyedData)) {
-      processed = keyedData
-    }
+async function onFilePickerChange(e, pickerIndex) {
+  const selected = e.target.value
+  filePath[pickerIndex].selected = selected
+  filePath = filePath.slice(0, pickerIndex + 1)
 
-    else if (keyedData) {
-      if (Object.entries(keyedData).every(x => Array.isArray(x))) {
-        console.log('hi', keyedData)
-      }
+  dataPath = [], data = []
 
-      const objToArray = []
-      Object.entries(keyedData).forEach(([k, v]) => {
-        objToArray.push({id: k, ...v})
-      })
-      processed = objToArray
-    }
-  }
+  const path = filePath.map(x => x.selected).join('/')
+  const res = await fetch(`/corpora/data/${path}.json`)
+  const json = await res.json()
 
-  return processed
-}
+  if (Array.isArray(json) && json[0].hasOwnProperty('isDirectory')) {
+    filePath = [...filePath, {
+      name: 'subcategory',
+      options: json.map(x => x.name),
+      selected: ''
+    }]
 
-async function onCategoryChange(e) {
-	const data = await fetch(`/corpora/data/${selected.category}.json`)
-  subcategories = await data.json()
-
-	selected.subcategoryOrFile = ''
-  selected.file = ''
-  selected.key = ''
-  selected.objectKey = ''
-  files = []
-	fileData = {}
-}
-
-async function onSubcategoryChange(e) {
-  const { category, subcategoryOrFile } = selected
-  const isSubcategory = subcategoryOrFile.endsWith('/')
-  const path = isSubcategory ? subcategoryOrFile.slice(0, -1) : subcategoryOrFile
-
-  const data = await fetch(`/corpora/data/${category}/${path}.json`)
-  const contents = await data.json()
-
-  if (isSubcategory) {
-    files = contents
-    fileData = {}
-    selected.key = ''
-    selected.objectKey = ''
-  }
+    corpus = null
+  } 
 
   else {
-    fileData = contents
-    files = []
-    selected.objectKey = 'all'
+    corpus = new Corpus({
+      rawData: json,
+      filePath: filePath.map(x => x.selected),
+    })
 
-    const keys = Array.isArray(fileData) ? [] : filterDataKeys(fileData)
-    if (keys.length == 1) {
-      selected.key = keys[0]
-    }
+    dataPath = corpus.path
+    data = corpus.data
   }
 }
 
-async function onFileChange(e) {
-  const { category, subcategoryOrFile, file } = selected
-  const data = await fetch(`/corpora/data/${category}/${subcategoryOrFile}${file}.json`)
-  fileData  = await data.json()
-  selected.objectKey = 'all'
+function onDataPickerChange(e, pickerIndex) {
+  const selected = e.target.value
+
+  dataPath[pickerIndex].selected = selected
+  dataPath = dataPath.slice(0, pickerIndex + 1)
+
+  dataPath = corpus.updatePath(dataPath)
+  data = corpus.data
 }
 
-function filterDataKeys(data) {
-	return Object.keys(data).filter(k => k.toLowerCase() !== 'source' && k.toLowerCase() !== 'description')
+function convertToStructured(e, pickerIndex) {
+  dataPath = dataPath.slice(0, pickerIndex + 1)
+  dataPath[pickerIndex] = {
+    name: 'filter',
+    options: [],
+    selected: 'all'
+  }
+
+  dataPath = corpus.updatePath(dataPath)
+  data = corpus.data
 }
 
-function addToGrammar() {
-  const key = keys.length == 1 ? keys[0] : selected.key
-  name = name ? name : placeholder || prompt('What are you calling this token?')
+function addToGrammar(e) {
+  name = name ? name : corpus.placeholder || prompt('What are you calling this token?')
 
   if (name) {
-    dispatch('addToGrammar', { 
-      name: name.replace(/#/g, ''), 
-      selected: {...selected, key}, 
-      corpus: filteredCorpus 
-    })
+    dispatch('addToGrammar', { name, corpus })
     name = ''
   }
 }
-
 </script>
 
 <style>
@@ -148,100 +105,73 @@ function addToGrammar() {
 .add-to-grammar input {
   min-width: 6rem;
   margin-right: var(--gap);
+  background: var(--color-bg);
+  border: 0.1rem solid var(--color-primary-mid);
+  border-radius: 0.2rem;
+  padding: var(--shim) var(--gap);
+}
+
+.add-to-grammar input:focus {
+  border-color: var(--color-primary-dark);
 }
 </style>
 
-<div class="corpora-picker">
+<h2>Corpora Explorer</h2>
 
-  <h2>Corpora Explorer</h2>
+{#each filePath as { name, options, selected }, i}
+  <Picker
+    {name}
+    {selected}
+    on:change={e => onFilePickerChange(e, i)}
+    >
+    {#each options as option}
+      <option value={option}>{option.replace(/_/g, ' ')}</option>
+    {/each}
+  </Picker>
+{/each}
 
-  <div class="selectors">
+{#each dataPath as { name, options, selected }, i}
+  {#if options.length > 1}
     <Picker
-      name="category"
-      bind:selected={selected.category}
-      on:change={onCategoryChange}
+      {name}
+      {selected}
+      on:change={e => onDataPickerChange(e, i)}
+      includePlaceholder={name !== 'filter'}
       >
-      {#each categories as name}
-        <option value={name}>{name.split('_').join(' ')}</option>
+      {#if name === 'filter'}
+        <option value='all'>all (structured)</option>
+      {/if}
+      {#each options as option}
+        <option value={option}>{option.replace(/_/g, ' ')}</option>
       {/each}
     </Picker>
 
-    {#if subcategories.length > 0}
-      <!-- &#10093;  -->
-      <Picker
-        name="subcategory"
-        bind:selected={selected.subcategoryOrFile}
-        on:change={onSubcategoryChange}
-        >
-
-        {#each subcategories as { name, isDirectory }}
-          <option value={`${name}${isDirectory ? '/' : ''}`}>{name.split('_').join(' ')}</option>
-        {/each}
-      </Picker>
+    {#if name === 'key' && selected === '' && i == corpus.path.length - 1}
+      ...or <button on:click={e => convertToStructured(e, i)}>convert to structured data</button>
     {/if}
+  {/if}
+{/each}
 
-    {#if files.length > 0}
-      <!-- &#10093;  -->
-      <Picker
-        name="file"
-        bind:selected={selected.file}
-        on:change={onFileChange}
-        >
-
-        {#each files as { name, isDirectory }}
-          <option value={name}>{name.split('_').join(' ')}</option>
-        {/each}
-      </Picker>
-    {/if}
-
-    {#if keys.length > 1}
-      <!-- &#10093;  -->
-      <Picker
-        name="key"
-        bind:selected={selected.key}
-        >
-        {#each keys as key}
-          <option value={key}>{key}</option>
-        {/each}
-      </Picker>
-    {/if}
-
-    {#if corpus.length > 0 && typeof corpus[0] !== 'string' && Object.keys(corpus[0]).length > 1}
-      <Picker
-        name="object-key"
-        bind:selected={selected.objectKey}
-        includePlaceholder={false}
-        >
-        <option value="all" selected>all (structured)</option>
-        {#each Object.keys(corpus[0]) as key}
-          <option value={key}>{key}</option>
-        {/each}
-      </Picker>
-    {/if}
-
-  </div>
-
+{#if corpus}
   <div class="description">
-    {#if fileData.description}
-      {fileData.description}
-    {:else if fileData.Description}
-      {fileData.Description}
+    {#if corpus.description}
+      {corpus.description}
     {/if}
 
-    {#if fileData.source}
-      {@html fileData.description || fileData.Description ? '<br>' : ''}
-      {#if fileData.source.startsWith('http')}
-      <a href={fileData.source}>{fileData.source}</a>
+    {#if corpus.source}
+      {@html corpus.description ? '<br>' : ''}
+      {#if corpus.source.startsWith('http')}
+        <a href={corpus.source}>{corpus.source}</a>
       {:else}
-      {fileData.source}
+        {corpus.source}
       {/if}
     {/if}
   </div>
 
-  {#if filteredCorpus.length > 0}
+  {#if data.length > 0}
     <form class="add-to-grammar" on:submit|preventDefault={addToGrammar}>
       <input
-        {placeholder}
+        placeholder={corpus.placeholder}
         bind:value={name}
         >
 
@@ -250,10 +180,9 @@ function addToGrammar() {
 
     <div class="summary">
       <CorpusSummary
-        data={filteredCorpus}
+        data={data}
         bind:open={detailsOpen}
         />
     </div>
   {/if}
-
-</div>
+{/if}
