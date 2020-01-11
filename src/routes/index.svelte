@@ -313,7 +313,5 @@ button {
 					>
 			</div>
 		{/if}
-
-		<!-- <p style="text-align: center"><a href={`?${qs.stringify({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})}`}>permalink to tokens + template<br>(copy to share)</a></p> -->
 	</div>
 </div>
