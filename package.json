@@ -40,5 +40,5 @@
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^4.0.4"
   },
-  "engines": { "node": "10.x" }
+  "engines": { "node": "12.x" }
 }
