@@ -10,7 +10,8 @@ export function post(req, res, next) {
 
 	if (req.headers['x-github-event'] === 'push' 
 			&& crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
-		res.sendStatus(200)
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end()
 
 		const commands = [
 			'git fetch origin main',
@@ -31,6 +32,7 @@ export function post(req, res, next) {
 
 	else {
 		console.log('webhook signature incorrect!')
-		return res.sendStatus(403)
+    res.writeHead(403, { 'Content-Type': 'text/plain' });
+    res.end('webhook signature incorrect')
 	}
 }
