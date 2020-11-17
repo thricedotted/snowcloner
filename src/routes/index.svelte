@@ -21,11 +21,23 @@ const defaultGrammar = {
 	}
 }
 
-export async function preload(page, session) {
-	let preloadGrammar = qs.parse(page.query)
+function encodeObject(object) {
+	return btoa(JSON.stringify(object))
+}
 
-	if (Object.entries(preloadGrammar).length === 0) {
-		preloadGrammar = defaultGrammar
+function decodeObject(object) {
+	if (process.browser)
+		return JSON.parse(decodeURIComponent(atob(decodeURIComponent(object))))
+	else
+		return JSON.parse(Buffer.from(object, 'base64').toString())
+}
+
+export async function preload(page, session) {
+	let query = qs.parse(page.query)
+	let preloadGrammar = defaultGrammar
+
+	if (query && query.g) {
+		preloadGrammar = decodeObject(query.g)
 	}
 
 	const queryGrammar = {}
@@ -36,7 +48,7 @@ export async function preload(page, session) {
 
 		const res = await this.fetch(`/corpora/data/${f.join('/')}.json`)
 		const json = await res.json()
-
+		
 		const corpus = new Corpus({
 			rawData: json,
 			filePath: f,
@@ -141,7 +153,9 @@ async function clone() {
 	return $grammar.flatten('#$ORIGIN$#')
 }
 
-onMount(async () => generated = await clone())
+onMount(async () => {
+	generated = await clone()
+})
 </script>
 
 <style>
@@ -309,7 +323,7 @@ button {
 				<input 
 					on:click={copyToClipboard}
 					readonly 
-					value={`${location.origin}?${qs.stringify({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})}`}
+					value={`${location.origin}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`}
 					>
 			</div>
 		{/if}
