@@ -8,7 +8,7 @@ import bodyParser from 'body-parser'
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
-const app = polka()
+const app = (module.exports = polka())
 
 app.use(
 	bodyParser.json(),
