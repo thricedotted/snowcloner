@@ -32,7 +32,8 @@ async function onFilePickerChange(e, pickerIndex) {
   dataPath = [], data = []
 
   const path = filePath.map(x => x.selected).join('/')
-  const res = await fetch(`/corpora/data/${path}.json`)
+  // const res = await fetch(`/corpora/data/${path}.json`)
+  const res = await fetch(`/corpora/${path}.json`)
   const json = await res.json()
 
   if (Array.isArray(json) && json[0].hasOwnProperty('isDirectory')) {

@@ -32,7 +32,7 @@ function decodeObject(object) {
 		return JSON.parse(Buffer.from(object, 'base64').toString())
 }
 
-export async function preload(page, session) {
+export async function load({ page, fetch }) {
 	let query = qs.parse(page.query)
 	let preloadGrammar = defaultGrammar
 
@@ -46,9 +46,9 @@ export async function preload(page, session) {
 		if (k === '$TEMPLATE$') return [k, v]
 		const { f, d } = v
 
-		const res = await this.fetch(`/corpora/data/${f.join('/')}.json`)
+		const res = await fetch(`/corpora/${f.join('/')}.json`)
 		const json = await res.json()
-		
+
 		const corpus = new Corpus({
 			rawData: json,
 			filePath: f,
@@ -60,10 +60,16 @@ export async function preload(page, session) {
 
 	promises.forEach(([k, v]) => queryGrammar[k] = v)
 
-	const data = await this.fetch('/corpora/data.json')
+	const data = await fetch('/corpora.json')
 	const categories = await data.json()
 
-	return { categories, preloadGrammar, queryGrammar }
+	return {
+		props: { 
+			categories, 
+			preloadGrammar, 
+			queryGrammar 
+		}
+	}
 }
 </script>
 
