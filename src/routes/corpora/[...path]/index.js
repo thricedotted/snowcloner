@@ -1,10 +1,9 @@
 import fs from 'fs'
-import appRoot from 'app-root-path'
 
 export async function get({ params }) {
   const { path } = params
 
-  const filePath = `${appRoot}/corpora/data/${path}`
+  const filePath = `${import.meta.url.split('/').slice(0, -4).join('/')}/_corpora/data/${path}`
 
   let results = undefined
 

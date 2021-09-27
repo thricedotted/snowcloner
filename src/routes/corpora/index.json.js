@@ -1,8 +1,7 @@
 import fs from 'fs'
-import appRoot from 'app-root-path'
 
 export async function get() {
-  const directory = `${appRoot}/corpora/data`
+  const directory = `${import.meta.url.split('/').slice(0, -3).join('/')}/_corpora/data`
 
   const files = fs.readdirSync(directory)
 
