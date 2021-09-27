@@ -15,6 +15,7 @@ const config = {
 		prerender: {
 			entries: 
 				[
+					"/",
 					"/corpora.json",
 					...glob.sync('**', { cwd: 'corpora/data' })
 								.map(path => `/corpora/${path.endsWith('.json') ? path : path + '.json'}`)
