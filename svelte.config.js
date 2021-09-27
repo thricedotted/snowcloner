@@ -12,11 +12,14 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 
-		prerender: [
-			"/corpora.json",
-			...glob.sync('**', { cwd: 'corpora/data' })
-						 .map(path => `/corpora/${path.endsWith('.json') ? path : path + '.json'}`)
-		]
+		prerender: {
+			entries: 
+				[
+					"/corpora.json",
+					...glob.sync('**', { cwd: 'corpora/data' })
+								.map(path => `/corpora/${path.endsWith('.json') ? path : path + '.json'}`)
+				]
+		}
 	}
 };
 
