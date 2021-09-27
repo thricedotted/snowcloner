@@ -1,6 +1,6 @@
 {
   "functions": {
-    "**/*.js": {
+    "api/*.js": {
       "includeFiles": "corpora/data/**"
     }
   }
