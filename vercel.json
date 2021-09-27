@@ -1,7 +1,0 @@
-{
-  "functions": {
-    ".vercel_build_output/*.js": {
-      "includeFiles": "corpora/data/**"
-    }
-  }
-}
