@@ -1,4 +1,4 @@
-import glob from glob
+import glob from 'glob'
 import vercel from '@sveltejs/adapter-vercel'
 
 /** @type {import('@sveltejs/kit').Config} */
