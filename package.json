@@ -15,8 +15,9 @@
     "tracery-grammar": "^2.7.4"
   },
   "devDependencies": {
-    "@sveltejs/kit": "next",
     "@sveltejs/adapter-vercel": "next",
+    "@sveltejs/kit": "next",
+    "glob": "^7.2.0",
     "svelte": "^3.0.0"
   }
 }
