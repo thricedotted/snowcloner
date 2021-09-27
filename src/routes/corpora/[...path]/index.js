@@ -1,3 +1,7 @@
+<script context="module">
+	export const prerender = true
+</script>
+
 import fs from 'fs'
 import appRoot from 'app-root-path'
 
