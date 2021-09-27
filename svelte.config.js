@@ -1,4 +1,3 @@
-import glob from 'glob'
 import vercel from '@sveltejs/adapter-vercel'
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -10,17 +9,7 @@ const config = {
 		adapter: vercel(),
 
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
-
-		prerender: {
-			entries: 
-				[
-					"/",
-					"/corpora.json",
-					...glob.sync('**', { cwd: 'corpora/data' })
-								.map(path => `/corpora/${path.endsWith('.json') ? path : path + '.json'}`)
-				]
-		}
+		target: '#svelte'
 	}
 };
 
