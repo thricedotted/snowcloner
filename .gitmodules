@@ -1,3 +1,0 @@
-[submodule "corpora"]
-	path = src/_corpora
-	url = https://github.com/dariusk/corpora
