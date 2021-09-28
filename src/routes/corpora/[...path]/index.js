@@ -1,4 +1,4 @@
-import { getCategories, getFiles, getFile } from 'corpora-project'
+import * as corpora from 'corpora-project'
 
 export async function get({ params }) {
   const { path } = params
@@ -8,14 +8,14 @@ export async function get({ params }) {
   try {
     const category = path.split('/').slice(0, -1).join('/')
     const filename = path.split('/').slice(-1)[0].replace('.json', '')
-    results = getFile(category, filename)
+    results = corpora.getFile(category, filename)
   }
 
   catch {
     const category = path.replace('.json', '')
 
-    const categories = getCategories(category)
-    const files = getFiles(category).map(f => f.name)
+    const categories = corpora.getCategories(category)
+    const files = corpora.getFiles(category).map(f => f.name)
 
     results = [
       ...categories.map(name => { return { name, isDirectory: true }}),

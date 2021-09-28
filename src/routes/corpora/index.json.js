@@ -1,7 +1,7 @@
-import { getCategories } from 'corpora-project'
+import * as corpora from 'corpora-project'
 
 export async function get() {
-  const files = getCategories()
+  const files = corpora.getCategories()
 
   return {
     body: files
