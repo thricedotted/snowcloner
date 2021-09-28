@@ -1,5 +1,5 @@
 {
-  "name": "TODO",
+  "name": "snowcloner",
   "description": "TODO",
   "version": "0.0.1",
   "type": "module",
@@ -8,12 +8,11 @@
     "build": "svelte-kit build"
   },
   "dependencies": {
-    "app-root-path": "^3.0.0",
     "base64url": "^3.0.1",
     "buffer": "^5.4.3",
-    "corpora-project": "^0.2.0",
     "qs": "^6.9.1",
-    "tracery-grammar": "^2.7.4"
+    "tracery-grammar": "^2.7.4",
+    "corpora": "thricedotted/corpora#loader"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "next",

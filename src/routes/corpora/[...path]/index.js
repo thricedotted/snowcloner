@@ -1,26 +1,20 @@
-import * as corpora from 'corpora-project'
+import { getCategoriesAndFiles, getFile } from 'corpora'
 
 export async function get({ params }) {
   const { path } = params
+  const segments = path.split('/')
 
   let results = undefined
 
   try {
-    const category = path.split('/').slice(0, -1).join('/')
-    const filename = path.split('/').slice(-1)[0].replace('.json', '')
-    results = corpora.getFile(category, filename)
+    results = getFile(...segments)
   }
 
   catch {
-    const category = path.replace('.json', '')
-
-    const categories = corpora.getCategories(category)
-    const files = corpora.getFiles(category).map(f => f.name)
-
-    results = [
-      ...categories.map(name => { return { name, isDirectory: true }}),
-      ...files.map(name => { return { name, isDirectory: false }})
-    ].sort((a, b) => a.name.localeCompare(b.name)) 
+    results = getCategoriesAndFiles(
+      ...segments.slice(0, -1), 
+      segments[segments.length - 1].replace('.json', '')
+    )
   }
 
   return {
