@@ -11,13 +11,13 @@
     "app-root-path": "^3.0.0",
     "base64url": "^3.0.1",
     "buffer": "^5.4.3",
+    "corpora-project": "^0.2.0",
     "qs": "^6.9.1",
     "tracery-grammar": "^2.7.4"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "next",
     "@sveltejs/kit": "next",
-    "glob": "^7.2.0",
     "svelte": "^3.0.0"
   }
 }

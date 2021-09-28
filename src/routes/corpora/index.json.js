@@ -1,9 +1,7 @@
-import fs from 'fs'
+import { getCategories } from 'corpora-project'
 
 export async function get() {
-  const directory = `${import.meta.url.split('/').slice(0, -3).join('/')}/_corpora/data`
-
-  const files = fs.readdirSync(directory)
+  const files = getCategories()
 
   return {
     body: files
