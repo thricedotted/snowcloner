@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "svelte-kit build"
+    "build": "svelte-kit build",
+    "preview": "svelte-kit preview"
   },
   "dependencies": {
     "base64url": "^3.0.1",

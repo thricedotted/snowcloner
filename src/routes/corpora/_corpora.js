@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path' 
 
-const dataDir = 'node_modules/corpora/data'
+const dataDir = './node_modules/corpora/data'
 
 function getCategoriesAndFiles(...segments) {
   const dirName = path.resolve(dataDir, ...segments)
