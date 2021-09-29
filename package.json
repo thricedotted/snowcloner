@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
+    "build-vercel": "svelte-kit build && cp -r ./node_modules/corpora ./.vercel_build_output/functions/node/render",
     "preview": "svelte-kit preview"
   },
   "dependencies": {

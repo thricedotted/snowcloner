@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path' 
+import { dev } from '$app/env'
 
-const dataDir = './node_modules/corpora/data'
+const dataDir = dev ? './node_modules/corpora/data' : './corpora/data'
 
 function getCategoriesAndFiles(...segments) {
   const dirName = path.resolve(dataDir, ...segments)
-  console.log('can i see this', dirName)
   return fs.readdirSync(dirName).map(name => {
     return { 
       name: name.replace('.json', ''), 
@@ -16,7 +16,6 @@ function getCategoriesAndFiles(...segments) {
 
 function getFile(...segments) {
   const fileName = path.resolve(dataDir, ...segments)
-  console.log('can i see this', fileName)
   return JSON.parse(fs.readFileSync(fileName))
 }
 
