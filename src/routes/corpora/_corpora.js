@@ -3,6 +3,8 @@ import path from 'path'
 
 const dataDir = './node_modules/corpora/data'
 
+console.log('import.meta.url', import.meta.url)
+
 function getCategoriesAndFiles(...segments) {
   const dirName = path.resolve(dataDir, ...segments)
   return fs.readdirSync(dirName).map(name => {
