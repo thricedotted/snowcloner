@@ -12,7 +12,7 @@
     "buffer": "^5.4.3",
     "qs": "^6.9.1",
     "tracery-grammar": "^2.7.4",
-    "corpora": "thricedotted/corpora#loader"
+    "corpora": "dariusk/corpora"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "next",

@@ -1,4 +1,4 @@
-import { getCategoriesAndFiles } from 'corpora'
+import { getCategoriesAndFiles } from './_corpora'
 
 export async function get() {
   const files = getCategoriesAndFiles()
