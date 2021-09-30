@@ -1,76 +1,82 @@
 <script context="module">
-import qs from 'qs'
-import Corpus from '../models/Corpus'
+	import qs from 'qs'
 
-const defaultGrammar = {
-	$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
+	import { browser } from '$app/env'
 
-	animal: {
-		f: ['animals', 'common'],
-		d: [{ name: 'key', selected: 'animals' }]
-	},
+	import Corpus from '../models/Corpus'
 
-	veggie: {
-		f: ['foods', 'vegetables'],
-		d: [{ name: 'key', selected: 'vegetables' }]
-	},
+	const defaultGrammar = {
+		$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
 
-	cute: {
-		f: ['words', 'emoji', 'cute_kaomoji'],
-		d: [{ name: 'key', selected: 'cuteKaomoji' }]
-	}
-}
+		animal: {
+			f: ['animals', 'common'],
+			d: [{ name: 'key', selected: 'animals' }]
+		},
 
-function encodeObject(object) {
-	return btoa(JSON.stringify(object))
-}
+		veggie: {
+			f: ['foods', 'vegetables'],
+			d: [{ name: 'key', selected: 'vegetables' }]
+		},
 
-function decodeObject(object) {
-	if (process.browser)
-		return JSON.parse(decodeURIComponent(atob(decodeURIComponent(object))))
-	else
-		return JSON.parse(Buffer.from(object, 'base64').toString())
-}
-
-export async function load({ page, fetch }) {
-	let query = qs.parse(page.query)
-	let preloadGrammar = defaultGrammar
-
-	if (query && query.g) {
-		preloadGrammar = decodeObject(query.g)
-	}
-
-	const queryGrammar = {}
-
-	const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
-		if (k === '$TEMPLATE$') return [k, v]
-		const { f, d } = v
-
-		const res = await fetch(`/corpora/${f.join('/')}.json`)
-		const json = await res.json()
-
-		const corpus = new Corpus({
-			rawData: json,
-			filePath: f,
-			path: d
-		})
-
-		return [k, corpus]
-	}))
-
-	promises.forEach(([k, v]) => queryGrammar[k] = v)
-
-	const data = await fetch('/corpora.json')
-	const categories = await data.json()
-
-	return {
-		props: { 
-			categories, 
-			preloadGrammar, 
-			queryGrammar 
+		cute: {
+			f: ['words', 'emoji', 'cute_kaomoji'],
+			d: [{ name: 'key', selected: 'cuteKaomoji' }]
 		}
 	}
-}
+
+	function encodeObject(object) {
+		return btoa(JSON.stringify(object))
+	}
+
+	function decodeObject(object) {
+		try {
+			const s = browser 
+								? decodeURIComponent(atob(decodeURIComponent(object)))
+								: Buffer.from(object, 'base64').toString()
+
+			return JSON.parse(s)
+		}
+		catch {
+			return null
+		}
+	}
+
+	export async function load({ page, fetch }) {
+		const { query } = page
+
+		const preloadGrammar = decodeObject(query.get('g')) || defaultGrammar
+
+		const queryGrammar = {}
+
+		const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
+			if (k === '$TEMPLATE$') return [k, v]
+			const { f, d } = v
+
+			const res = await fetch(`/corpora/${f.join('/')}.json`)
+			const json = await res.json()
+
+			const corpus = new Corpus({
+				rawData: json,
+				filePath: f,
+				path: d
+			})
+
+			return [k, corpus]
+		}))
+
+		promises.forEach(([k, v]) => queryGrammar[k] = v)
+
+		const data = await fetch('/corpora.json')
+		const categories = await data.json()
+
+		return {
+			props: { 
+				categories, 
+				preloadGrammar, 
+				queryGrammar 
+			}
+		}
+	}
 </script>
 
 <script>
