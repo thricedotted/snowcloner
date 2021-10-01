@@ -1,27 +1,27 @@
 <script>
-import { createEventDispatcher } from 'svelte'
+  import { createEventDispatcher } from 'svelte'
 
-const dispatch = createEventDispatcher()
+  const dispatch = createEventDispatcher()
 
-export let rawGrammar, corporaTokens
+  export let rawGrammar, corporaTokens
 
-let showDetails = false
+  let showDetails = false
 
-function extractSubkeys(value) {
-  return value.match(/\[.+?:/g).map(s => `<b>#${s.slice(1, -1)}#</b>`)
-}
+  function extractSubkeys(value) {
+    return value.match(/\[.+?:/g).map(s => `<b>#${s.slice(1, -1)}#</b>`)
+  }
 
-function removeFromGrammar(key) {
-  dispatch('removeFromGrammar', key) 
-}
+  function removeFromGrammar(key) {
+    dispatch('removeFromGrammar', key) 
+  }
 
-function formatCorporaLocation({ f, d }) {
-  const j = ' › '
-  return [f.join(j), d.map(x => x.selected).join(j)].join(j)
-}
+  function formatCorporaLocation({ f, d }) {
+    const j = ' › '
+    // return [f.join(j), d.map(x => x.selected).join(j)].join(j)
+    return f.join(j)
+  }
 
-$: entries = Object.entries(rawGrammar).filter(([k, v]) => !/^\$[A-Z]+\$$/.test(k))
-
+  $: entries = Object.entries(rawGrammar).filter(([k, v]) => !/^\$[A-Z]+\$$/.test(k))
 </script>
 
 <style>
@@ -97,7 +97,9 @@ button:hover, button:focus {
           {/if}
 
           {#if showDetails}
-          <span class="location">{formatCorporaLocation(corporaTokens[key.startsWith('_') ? key.slice(1) : key])}</span>
+          <span class="location">
+            {formatCorporaLocation(corporaTokens[key.startsWith('_') ? key.slice(1) : key])}
+          </span>
           {/if}
         </li>
     {/each}
