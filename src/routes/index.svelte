@@ -9,17 +9,17 @@
 		$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
 
 		animal: {
-			f: ['animals', 'common'],
+			f: ['animals', 'common.json'],
 			d: [{ name: 'key', selected: 'animals' }]
 		},
 
 		veggie: {
-			f: ['foods', 'vegetables'],
+			f: ['foods', 'vegetables.json'],
 			d: [{ name: 'key', selected: 'vegetables' }]
 		},
 
 		cute: {
-			f: ['words', 'emoji', 'cute_kaomoji'],
+			f: ['words', 'emoji', 'cute_kaomoji.json'],
 			d: [{ name: 'key', selected: 'cuteKaomoji' }]
 		}
 	}
@@ -52,7 +52,7 @@
 			if (k === '$TEMPLATE$') return [k, v]
 			const { f, d } = v
 
-			const res = await fetch(`/corpora/${f.join('/')}.json`)
+			const res = await fetch(`/data/${f.join('/')}`)
 			const json = await res.json()
 
 			const corpus = new Corpus({
@@ -66,12 +66,10 @@
 
 		promises.forEach(([k, v]) => queryGrammar[k] = v)
 
-		const categories = await fetch('/corpora.json').then(data => data.json())
 		const fileTree = await fetch('/data/index.json').then(data => data.json())
 
 		return {
 			props: { 
-				categories, 
 				fileTree,
 				preloadGrammar, 
 				queryGrammar 
@@ -86,10 +84,9 @@ import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
 import CorporaPicker from '../components/CorporaPicker.svelte'
-import NewCorporaPicker from '../components/NewCorporaPicker.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
 
-export let categories, preloadGrammar = {}, queryGrammar = {}
+export let preloadGrammar = {}, queryGrammar = {}
 export let fileTree
 
 let generated = ''
@@ -304,11 +301,7 @@ button {
 	</header>
 
 	<div class="explorer">
-		<!-- <CorporaPicker
-			{categories}
-			on:addToGrammar={e => addToGrammar(e.detail)}
-			/> -->
-		<NewCorporaPicker
+		<CorporaPicker
 			{fileTree}
 			on:addToGrammar={e => addToGrammar(e.detail)}
 			/>

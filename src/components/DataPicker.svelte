@@ -1,4 +1,6 @@
 <script>
+  import CorpusSummary from './CorpusSummary.svelte'
+
   export let corpus
 
   let dataPath = corpus.path
@@ -51,3 +53,9 @@
     {/if}
   {/if}
 {/each}
+
+<CorpusSummary
+  {corpus}
+  {data}
+  on:addToGrammar
+/>
