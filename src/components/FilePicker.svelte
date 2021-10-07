@@ -1,5 +1,6 @@
 <script>
-  import { onMount } from "svelte"
+  import { onMount } from 'svelte'
+  import { formatCorpusName } from '$lib/util'
 
   export let type
   export let tree
@@ -8,11 +9,6 @@
   export let includePlaceholder = true
 
   const { name, children } = tree
-
-  function formatName(s) {
-    return s.replace('.json', '')
-            .replaceAll('_', ' ')
-  }
 
   onMount(() => {
     if (path.length < depth + 1) {
@@ -38,7 +34,7 @@
     {/if}
 
     {#each children as { name: childName }}
-      <option value="{childName}">{formatName(childName)}</option>
+      <option value="{childName}">{formatCorpusName(childName)}</option>
     {/each}
 
   </select>
