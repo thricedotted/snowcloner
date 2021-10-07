@@ -1,6 +1,8 @@
 <script>
   import { createEventDispatcher } from 'svelte'
 
+  import TokenPath from './TokenPath.svelte'
+
   const dispatch = createEventDispatcher()
 
   export let rawGrammar, corporaTokens
@@ -13,12 +15,6 @@
 
   function removeFromGrammar(key) {
     dispatch('removeFromGrammar', key) 
-  }
-
-  function formatCorporaLocation({ f, d }) {
-    const j = ' › '
-    // return [f.join(j), d.map(x => x.selected).join(j)].join(j)
-    return f.join(j)
   }
 
   $: entries = Object.entries(rawGrammar).filter(([k, v]) => !/^\$[A-Z]+\$$/.test(k))
@@ -89,7 +85,7 @@ button:hover, button:focus {
   <ul>
     {#each entries as [key, value]}
         <li>
-          <button aria-label="Remove {key} from grammar" on:click={() => removeFromGrammar(key)}>×</button>
+          <button title="Remove &ldquo;{key}&rdquo; from grammar" on:click={() => removeFromGrammar(key)}>×</button>
           {#if key.startsWith('_')}
             {@html extractSubkeys(value[0]).join(', ')} ({value.length})
           {:else}
@@ -98,7 +94,10 @@ button:hover, button:focus {
 
           {#if showDetails}
           <span class="location">
-            {formatCorporaLocation(corporaTokens[key.startsWith('_') ? key.slice(1) : key])}
+            <TokenPath 
+              token={corporaTokens[key.startsWith('_') ? key.slice(1) : key]}
+              on:jumpToCorpus
+            />
           </span>
           {/if}
         </li>

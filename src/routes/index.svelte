@@ -90,7 +90,7 @@ import GrammarSummary from '../components/GrammarSummary.svelte'
 import ShareSnowclone from '../components/ShareSnowclone.svelte'
 
 export let preloadGrammar = {}, queryGrammar = {}
-export let fileTree
+export let fileTree, filePath = ['']
 
 let generated = ''
 
@@ -292,6 +292,7 @@ button {
 	<div class="explorer">
 		<CorporaPicker
 			{fileTree}
+			bind:filePath
 			on:addToGrammar={e => addToGrammar(e.detail)}
 			/>
 	</div>
@@ -308,6 +309,7 @@ button {
 					rawGrammar={$rawGrammar} 
 					{corporaTokens}
 					on:removeFromGrammar={e => $rawGrammar[e.detail] = undefined}
+					on:jumpToCorpus={e => filePath = e.detail}
 					/>
 			</div>
 
