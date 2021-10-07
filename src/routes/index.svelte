@@ -66,12 +66,13 @@
 
 		promises.forEach(([k, v]) => queryGrammar[k] = v)
 
-		const data = await fetch('/corpora.json')
-		const categories = await data.json()
+		const categories = await fetch('/corpora.json').then(data => data.json())
+		const fileTree = await fetch('/data/index.json').then(data => data.json())
 
 		return {
 			props: { 
 				categories, 
+				fileTree,
 				preloadGrammar, 
 				queryGrammar 
 			}
@@ -85,9 +86,11 @@ import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
 import CorporaPicker from '../components/CorporaPicker.svelte'
+import NewCorporaPicker from '../components/NewCorporaPicker.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
 
 export let categories, preloadGrammar = {}, queryGrammar = {}
+export let fileTree
 
 let generated = ''
 
@@ -301,8 +304,12 @@ button {
 	</header>
 
 	<div class="explorer">
-		<CorporaPicker
+		<!-- <CorporaPicker
 			{categories}
+			on:addToGrammar={e => addToGrammar(e.detail)}
+			/> -->
+		<NewCorporaPicker
+			{fileTree}
 			on:addToGrammar={e => addToGrammar(e.detail)}
 			/>
 	</div>

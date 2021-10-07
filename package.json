@@ -12,9 +12,10 @@
   "dependencies": {
     "base64url": "^3.0.1",
     "buffer": "^5.4.3",
+    "corpora": "dariusk/corpora",
+    "directory-tree": "^3.0.0",
     "qs": "^6.9.1",
-    "tracery-grammar": "^2.7.4",
-    "corpora": "dariusk/corpora"
+    "tracery-grammar": "^2.7.4"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "next",

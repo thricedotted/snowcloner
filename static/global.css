@@ -94,6 +94,8 @@ select {
 
 	cursor: pointer;
 	transition: 0.3s all;
+
+	width: 100%;
 }
 
 select:hover:not(:invalid), select:focus:not(:invalid) {
