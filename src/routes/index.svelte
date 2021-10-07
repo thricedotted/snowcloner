@@ -80,11 +80,14 @@
 
 <script>
 import tracery from 'tracery-grammar'
+
 import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
+import { page } from '$app/stores'
 
 import CorporaPicker from '../components/CorporaPicker.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
+import ShareSnowclone from '../components/ShareSnowclone.svelte'
 
 export let preloadGrammar = {}, queryGrammar = {}
 export let fileTree
@@ -154,11 +157,7 @@ function addToGrammar({ name, corpus }) {
 	}
 }
 
-function copyToClipboard(e) {
-	e.target.focus()
-	e.target.select()
-	document.execCommand('copy')
-}
+$: shareUrl = `${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`
 
 async function clone() {
 	await tick()
@@ -222,7 +221,7 @@ h1 {
 	border-right: 0.1rem solid currentColor;
 }
 
-.compose > * {
+.compose > :global(*) {
 	position: relative;
 	margin: 0 auto var(--double-gap) auto;
 	max-width: 36rem;
@@ -279,16 +278,6 @@ button {
 	top: 1rem;
 	padding: var(--shim) var(--double-gap);
 }
-
-.share {
-	font-size: var(--font-smallest);
-}
-
-.share input {
-	width: 100%;
-	user-select: all;
-	text-overflow: ellipsis;
-}
 </style>
 
 <svelte:head>
@@ -329,15 +318,7 @@ button {
 
 		</div>
 
-		{#if typeof location !== 'undefined'}
-			<div class="share">
-				<b>Wanna share your snowclone? Copy the link below!</b><br>
-				<input 
-					on:click={copyToClipboard}
-					readonly 
-					value={`${location.origin}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`}
-					>
-			</div>
-		{/if}
+		<ShareSnowclone {shareUrl} />
+
 	</div>
 </div>
