@@ -1,5 +1,5 @@
 import directoryTree from 'directory-tree'
-import { dataDir } from '../_util'
+import { dataDir } from '$lib/util'
 
 export async function get() {
   return {

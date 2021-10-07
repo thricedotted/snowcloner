@@ -1,6 +1,7 @@
 import fs from 'fs'
+
 import { resolve } from 'path' 
-import { dataDir } from './_util'
+import { dataDir } from '$lib/util'
 
 export async function get({ params }) {
   const { path } = params
