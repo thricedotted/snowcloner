@@ -12,7 +12,7 @@
   "dependencies": {
     "base64url": "^3.0.1",
     "buffer": "^5.4.3",
-    "corpora": "dariusk/corpora",
+    "corpora": "github:dariusk/corpora",
     "directory-tree": "^3.0.0",
     "qs": "^6.9.1",
     "tracery-grammar": "^2.7.4"
@@ -21,6 +21,7 @@
     "@sveltejs/adapter-vercel": "next",
     "@sveltejs/kit": "next",
     "clipboard-copy": "^4.0.1",
-    "svelte": "^3.0.0"
+    "core-js": "^3.19.0",
+    "svelte": "^3.44.0"
   }
 }

@@ -1,3 +1,5 @@
+import { replaceAll } from 'core-js'
+
 import { dev } from '$app/env'
 
 // project root-relative location of data
