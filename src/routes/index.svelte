@@ -25,7 +25,10 @@
 	}
 
 	function encodeObject(object) {
-		return btoa(JSON.stringify(object))
+		const stringified = JSON.stringify(object)
+		return browser
+					 ? btoa(stringified)
+					 : Buffer.from(stringified).toString('base64')
 	}
 
 	function decodeObject(object) {
