@@ -22,6 +22,7 @@
     "@sveltejs/kit": "next",
     "clipboard-copy": "^4.0.1",
     "core-js": "^3.19.0",
+    "qrcode": "^1.5.0",
     "svelte": "^3.44.0"
   }
 }
