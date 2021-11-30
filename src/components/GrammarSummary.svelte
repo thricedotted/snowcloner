@@ -41,6 +41,10 @@ li {
   color: var(--color-primary-dark);
 }
 
+details:not([open]) {
+  margin-bottom: var(--shim);
+}
+
 summary h2 {
   display: inline-block;
   margin: 0;
