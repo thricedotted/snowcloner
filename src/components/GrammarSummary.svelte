@@ -45,11 +45,6 @@ details:not([open]) {
   margin-bottom: var(--shim);
 }
 
-summary h2 {
-  display: inline-block;
-  margin: 0;
-}
-
 button {
   font-size: var(--font-smallest);
   padding: 0 var(--shim);

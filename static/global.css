@@ -167,6 +167,11 @@ summary {
 	cursor: pointer;
 }
 
+summary h2 {
+  display: inline-block;
+  margin: 0;
+}
+
 a {
 	color: inherit;
 	text-decoration: underline var(--color-primary-mid);
