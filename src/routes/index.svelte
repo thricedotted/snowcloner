@@ -91,6 +91,7 @@ import { page } from '$app/stores'
 import CorporaPicker from '../components/CorporaPicker.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
 import ShareSnowclone from '../components/ShareSnowclone.svelte'
+import About from '../components/About.svelte'
 
 export let preloadGrammar = {}, queryGrammar = {}
 export let fileTree, filePath = ['']
@@ -249,7 +250,7 @@ h1 {
 	margin-top: calc(3 * var(--double-gap));
 }
 
-.editor::before {
+.editor::before, .about::before {
 	content: ' ';
 	font-size: 1.2rem;
 	position: relative;
@@ -260,6 +261,10 @@ h1 {
 	border: 1px dashed var(--color-primary-dark);
 	margin-bottom: calc(2 * var(--double-gap));
 	opacity: 0.5;
+}
+
+.about {
+	margin-top: calc(2 * var(--double-gap));
 }
 
 textarea {
@@ -324,6 +329,12 @@ button {
 		</div>
 
 		<ShareSnowclone {shareUrl} />
+
+		<div class="about">
+			<About 
+				on:jumpToCorpus={e => filePath = e.detail}
+			/>
+		</div>
 
 	</div>
 </div>
