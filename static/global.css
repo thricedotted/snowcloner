@@ -14,16 +14,6 @@
 
 	--mobile-breakpoint: 40rem;
 
-	/* --color-fg: #121629;
-	--color-bg: #fffffe;
-
-	--color-primary-dark: #232946;
-	--color-primary-mid: #566194;
-	--color-primary-light: #b8c1ec; 
-
-	--color-accent: #eebbc3;
-	*/
-
 	--color-fg: #2e4768;
 	--color-bg: #fffffe;
 
@@ -35,7 +25,6 @@
 }
 
 body {
-	/* font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 	font-family: Muli, sans-serif;
 
 	margin: 0;
