@@ -1,10 +1,14 @@
 {
-	"background_color": "#ffffff",
-	"theme_color": "#333333",
-	"name": "TODO",
-	"short_name": "TODO",
-	"display": "minimal-ui",
+	"short_name": "Snowcloner",
+	"name": "Make Me a Snowclone",
+
+	"background_color": "#F1F2EA",
+	"theme_color": "#415D82",
+
+	"display": "standalone",
+
 	"start_url": "/",
+
 	"icons": [
 		{
 			"src": "logo-192.png",
