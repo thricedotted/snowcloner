@@ -90,35 +90,39 @@
 
       <ul>
         <li>
-          <b>capitalize:</b> Capitalize the first letter of the word.
+          <b>lowercase:</b> Make all of the letters in the text lowercase.
         </li>
 
         <li>
-          <b>capitalizeAll:</b> Capitalize the first letter of every word in a phrase.
+          <b>uppercase:</b> Make all of the letters in the text uppercase.
         </li>
 
         <li>
-          <b>lowercase:</b> Make the word entirely lowercase.
+          <b>capitalize:</b> Capitalize the first letter of the text.
         </li>
 
         <li>
-          <b>a:</b> Put "a" or "an" in front of the word, depending on whether it starts with a vowel or not.
+          <b>capitalizeAll:</b> Capitalize the first letter of every word in the text.
         </li>
 
         <li>
-          <b>s:</b> Put "s", "es", or "ies" at the end of the word, depending on what it ends with.
+          <b>a:</b> Put "a" or "an" in front of the text, depending on whether it starts with a vowel or not.
         </li>
 
         <li>
-          <b>firstS:</b> Like the s modifier, but on the first word of a phrase.
+          <b>s:</b> Put "s", "es", or "ies" at the end of the text, depending on what it ends with.
         </li>
 
         <li>
-          <b>ed:</b> Put "d", "ed", or "ied" at the end of a word.
+          <b>firstS:</b> Like the s modifier, but operates on the first word of the text.
         </li>
 
         <li>
-          <b>replace(X,Y):</b> Replace X with Y. (You can replace X and Y here with whatever letters you want.)
+          <b>ed:</b> Put "d", "ed", or "ied" at the end of the text.
+        </li>
+
+        <li>
+          <b>replace(X,Y):</b> Replace X with Y. (You can replace X and Y here with whatever text you want.)
         </li>
       </ul>
     </dd>
