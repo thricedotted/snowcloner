@@ -16,12 +16,12 @@ function formatToken(t) {
   {token.map(formatToken).join(', ')}<br>
 {:else}
   <div class="token-property">
-  {#each Object.entries(token) as [key, value]}
-    {#if typeof value === 'object'}
-      <b>{key}</b>&nbsp;<svelte:self token={value} />
-    {:else}
-      <b>{key}</b>&nbsp;{value}<br>
-    {/if}
-  {/each}
+    {#each Object.entries(token) as [key, value]}
+      {#if value && value instanceof Object}
+        <b>{key}</b>&nbsp;<svelte:self token={value} />
+      {:else if value}
+        <b>{key}</b>&nbsp;{value}<br>
+      {/if}
+    {/each}
   </div>
 {/if}
