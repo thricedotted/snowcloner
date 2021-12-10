@@ -148,10 +148,6 @@ label {
 	display: block;
 }
 
-details {
-	position: relative;
-}
-
 summary {
 	cursor: pointer;
 }
