@@ -49,6 +49,8 @@
 
 		const preloadGrammar = decodeObject(query.get('g')) || defaultGrammar
 
+		console.log('preloadGrammar', preloadGrammar)
+
 		const queryGrammar = {}
 
 		const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
@@ -113,9 +115,8 @@ Object.entries(queryGrammar).forEach(([name, corpus]) => {
 const grammar = derived(rawGrammar, $rawGrammar => {
 	// clean out any keys that have been removed
 	Object.keys($rawGrammar).forEach(k => {
-		if (typeof $rawGrammar[k] === 'undefined') {
+		if ($rawGrammar[k] === undefined) {
 			delete $rawGrammar[k]
-			corporaTokens[k] = undefined
 		}
 	})
 
@@ -140,9 +141,10 @@ const grammar = derived(rawGrammar, $rawGrammar => {
 function addToGrammar({ name, corpus }) {
 	const { filePath, path, data } = corpus
 
+	// we have to clone these arrays, or they will point to corpus refs that will change!
 	corporaTokens[name] = { 
-		f: filePath,
-		d: path.map(({ name, selected }) => ({ name, selected }))
+		f: [...filePath],
+		d: [...path]
 	}
 
 	if (typeof data[0] === 'object') {
@@ -159,6 +161,12 @@ function addToGrammar({ name, corpus }) {
 	else {
 		$rawGrammar[name] = data
 	}
+}
+
+function removeFromGrammar(key) {
+	// using "delete" doesn't trigger reactivity. setting to undefined does. 
+	$rawGrammar[key] = undefined
+	delete corporaTokens[key]
 }
 
 $: shareUrl = `${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`
@@ -312,7 +320,7 @@ button {
 				<GrammarSummary 
 					rawGrammar={$rawGrammar} 
 					{corporaTokens}
-					on:removeFromGrammar={e => $rawGrammar[e.detail] = undefined}
+					on:removeFromGrammar={e => removeFromGrammar(e.detail)}
 					on:jumpToCorpus={e => filePath = e.detail}
 					/>
 			</div>
