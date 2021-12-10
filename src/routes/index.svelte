@@ -49,8 +49,6 @@
 
 		const preloadGrammar = decodeObject(query.get('g')) || defaultGrammar
 
-		console.log('preloadGrammar', preloadGrammar)
-
 		const queryGrammar = {}
 
 		const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
