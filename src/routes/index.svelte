@@ -164,7 +164,7 @@ function addToGrammar({ name, corpus }) {
 		return flattenedObject
 	}
 
-	if (data[0] instanceof Object) {
+	if (typeof data[0] === 'object') {
 		const actionName = `_${name}`
 		const mapped = data.map(choice => {
 			return Object.entries(flattenStructured(choice, name))
