@@ -145,11 +145,30 @@ function addToGrammar({ name, corpus }) {
 		d: [...path]
 	}
 
-	if (typeof data[0] === 'object') {
+	const flattenStructured = (o, keyName) => {
+		let flattenedObject = {}
+
+		const _flatten = (obj, keyName) => {
+			Object.keys(obj).forEach(key => {
+				const newKey = `${keyName}-${key}` 
+				if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+					_flatten(obj[key], newKey);
+				} else {
+					flattenedObject[newKey] = obj[key];
+				}
+			})
+		}
+
+		_flatten(o, keyName)
+
+		return flattenedObject
+	}
+
+	if (data[0] instanceof Object) {
 		const actionName = `_${name}`
 		const mapped = data.map(choice => {
-			return Object.entries(choice)
-						 .map(([k, v]) => `[${name}-${k}:${v}]`)
+			return Object.entries(flattenStructured(choice, name))
+						 .map(([k, v]) => `[${k}:${v}]`)
 						 .join('')
 		})
 
