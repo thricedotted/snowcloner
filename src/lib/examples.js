@@ -58,7 +58,7 @@ const examples = [
   {
     name: 'Far Away',
     data: {
-      $TEMPLATE$: '#weather.lowercase#\nin #p-city.lowercase#\n\nmy heart is #size.a#\n#paint.lowercase# #paint.lowercase#\nsurrounded by #material#\n\n#p-population# mouths open at once:\n#fortune.uppercase#\n\n#p-state.lowercase# is so far away',
+      $TEMPLATE$: '#weather.lowercase#\nin #p-city.lowercase#\n\nmy heart is #size.a#\n#paint.lowercase# #paint.lowercase#\nsurrounded by #material#\n\n#p-population.formatNumber# mouths open at once:\n#fortune.uppercase#\n\n#p-state.lowercase# is so far away',
 
       weather: {
         f: ['science', 'weather_conditions.json'],
