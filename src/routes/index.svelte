@@ -87,6 +87,7 @@ import CorporaPicker from '$lib/components/CorporaPicker.svelte'
 import GrammarSummary from '$lib/components/GrammarSummary.svelte'
 import ShareSnowclone from '$lib/components/ShareSnowclone.svelte'
 import Examples from '$lib/components/Examples.svelte'
+import About from '$lib/components/About.svelte'
 
 export let corporaTokens
 export let initialGrammar = {}
@@ -284,7 +285,7 @@ h1 {
 	margin-top: calc(3 * var(--double-gap));
 }
 
-.editor::before {
+.editor::before, .about::before {
 	content: ' ';
 	font-size: 1.2rem;
 	position: relative;
@@ -295,6 +296,10 @@ h1 {
 	border: 1px dashed var(--color-primary-dark);
 	margin-bottom: calc(2 * var(--double-gap));
 	opacity: 0.5;
+}
+
+.about {
+	margin-top: calc(2 * var(--double-gap));
 }
 
 textarea {
@@ -363,6 +368,12 @@ button {
 			on:logTokens={() => console.log(corporaTokens)}
 			on:loadTokens={e => loadFromTokens(e.detail)}
 		/>
+
+		<div class="about">
+			<About 
+				on:jumpToCorpus={e => filePath = e.detail}
+			/>
+		</div>
 
 	</div>
 </div>
