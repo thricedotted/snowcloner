@@ -1,5 +1,5 @@
 <script>
-  import TokenPath from './TokenPath.svelte'
+  import TokenPath from '$lib/components/TokenPath.svelte'
 </script>
 
 <style>
