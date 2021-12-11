@@ -5,7 +5,7 @@
 
 	import Corpus from '../models/Corpus'
 
-	const defaultGrammar = {
+	const defaultTokens = {
 		$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
 
 		animal: {
@@ -44,38 +44,49 @@
 		}
 	}
 
+	async function loadCorpus(key, paths, fetch) {
+		const { f, d } = paths
+
+		const res = await fetch(`/data/${f.join('/')}`)
+		const json = await res.json()
+
+		const corpus = new Corpus({
+			rawData: json,
+			filePath: f,
+			path: d
+		})
+
+		return [key, corpus]
+	}
+
+	async function loadPreloadGrammar(corporaTokens, fetch) {
+		const rawGrammar = {}
+
+		const promises = await Promise.all(Object.entries(corporaTokens).map(async ([k, v]) => {
+			if (k === '$TEMPLATE$') return [k, v]
+
+			return await loadCorpus(k, v, fetch)
+		}))
+
+		promises.forEach(([k, v]) => rawGrammar[k] = v)
+
+		return rawGrammar
+	}
+
 	export async function load({ page, fetch }) {
 		const { query } = page
 
-		const preloadGrammar = decodeObject(query.get('g')) || defaultGrammar
+		const corporaTokens = decodeObject(query.get('g')) || defaultTokens
 
-		const queryGrammar = {}
-
-		const promises = await Promise.all(Object.entries(preloadGrammar).map(async ([k, v]) => {
-			if (k === '$TEMPLATE$') return [k, v]
-			const { f, d } = v
-
-			const res = await fetch(`/data/${f.join('/')}`)
-			const json = await res.json()
-
-			const corpus = new Corpus({
-				rawData: json,
-				filePath: f,
-				path: d
-			})
-
-			return [k, corpus]
-		}))
-
-		promises.forEach(([k, v]) => queryGrammar[k] = v)
+		const initialGrammar = await loadPreloadGrammar(corporaTokens, fetch)
 
 		const fileTree = await fetch('/data/index.json').then(data => data.json())
 
 		return {
 			props: { 
 				fileTree,
-				preloadGrammar, 
-				queryGrammar 
+				corporaTokens, 
+				initialGrammar 
 			}
 		}
 	}
@@ -92,19 +103,18 @@ import CorporaPicker from '../components/CorporaPicker.svelte'
 import GrammarSummary from '../components/GrammarSummary.svelte'
 import ShareSnowclone from '../components/ShareSnowclone.svelte'
 
-export let preloadGrammar = {}, queryGrammar = {}
+export let corporaTokens
+export let initialGrammar = {}
 export let fileTree, filePath = ['']
 
 let generated = ''
 
-const corporaTokens = preloadGrammar
-
 const rawGrammar = writable({
-	$TEMPLATE$: [preloadGrammar['$TEMPLATE$'] || 'Hello!'],
+	$TEMPLATE$: [initialGrammar['$TEMPLATE$'] || 'Hello!'],
 	$ORIGIN$: ['#[#$ACTIONS$#]$TEMPLATE$#']
 })
 
-Object.entries(queryGrammar).forEach(([name, corpus]) => {
+Object.entries(initialGrammar).forEach(([name, corpus]) => {
 	if (name !== '$TEMPLATE$') {
 		addToGrammar({ name, corpus })
 	}
