@@ -3,26 +3,10 @@
 
 	import { browser } from '$app/env'
 
+	import examples from '$lib/examples'
 	import Corpus from '$lib/models/Corpus'
 
-	const defaultTokens = {
-		$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
-
-		animal: {
-			f: ['animals', 'common.json'],
-			d: [{ name: 'key', selected: 'animals' }]
-		},
-
-		veggie: {
-			f: ['foods', 'vegetables.json'],
-			d: [{ name: 'key', selected: 'vegetables' }]
-		},
-
-		cute: {
-			f: ['words', 'emoji', 'cute_kaomoji.json'],
-			d: [{ name: 'key', selected: 'cuteKaomoji' }]
-		}
-	}
+	const defaultTokens = examples[0].data
 
 	function encodeObject(object) {
 		const stringified = JSON.stringify(object)
@@ -207,6 +191,7 @@ async function loadFromTokens(tokens) {
 	corporaTokens = tokens
 	initialGrammar = await loadCorpora(corporaTokens, fetch)
 	setupRawGrammar(initialGrammar)
+	generated = await clone()
 }
 
 $: shareUrl = `${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`
@@ -373,7 +358,10 @@ button {
 
 		<ShareSnowclone {shareUrl} />
 
-		<Examples />
+		<Examples 
+			on:logTokens={() => console.log(corporaTokens)}
+			on:loadTokens={e => loadFromTokens(e.detail)}
+		/>
 
 	</div>
 </div>
