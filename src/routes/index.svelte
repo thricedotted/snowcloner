@@ -127,8 +127,8 @@ const grammar = derived(rawGrammar, $rawGrammar => {
 		$ACTIONS$: [actionKeys.join('')]
 	})
 
-	g.addModifiers(tracery.baseEngModifiers)
 	g.addModifiers({
+		...tracery.baseEngModifiers,
 		lowercase: s => s.toLowerCase(),
 		uppercase: s => s.toUpperCase(),
 		formatNumber: s => isNaN(s) ? s : parseInt(s).toLocaleString()
