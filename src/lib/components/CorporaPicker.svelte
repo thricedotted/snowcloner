@@ -1,5 +1,5 @@
 <script>
-  import Corpus from '../models/Corpus'
+  import Corpus from '$lib/models/Corpus'
 
   import FilePicker from './FilePicker.svelte'
   import DataPicker from './DataPicker.svelte'

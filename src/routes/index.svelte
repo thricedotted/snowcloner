@@ -3,7 +3,7 @@
 
 	import { browser } from '$app/env'
 
-	import Corpus from '../models/Corpus'
+	import Corpus from '$lib/models/Corpus'
 
 	const defaultTokens = {
 		$TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
@@ -59,7 +59,7 @@
 		return [key, corpus]
 	}
 
-	async function loadPreloadGrammar(corporaTokens, fetch) {
+	async function loadCorpora(corporaTokens, fetch) {
 		const rawGrammar = {}
 
 		const promises = await Promise.all(Object.entries(corporaTokens).map(async ([k, v]) => {
@@ -78,7 +78,7 @@
 
 		const corporaTokens = decodeObject(query.get('g')) || defaultTokens
 
-		const initialGrammar = await loadPreloadGrammar(corporaTokens, fetch)
+		const initialGrammar = await loadCorpora(corporaTokens, fetch)
 
 		const fileTree = await fetch('/data/index.json').then(data => data.json())
 
@@ -99,9 +99,10 @@ import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 import { page } from '$app/stores'
 
-import CorporaPicker from '../components/CorporaPicker.svelte'
-import GrammarSummary from '../components/GrammarSummary.svelte'
-import ShareSnowclone from '../components/ShareSnowclone.svelte'
+import CorporaPicker from '$lib/components/CorporaPicker.svelte'
+import GrammarSummary from '$lib/components/GrammarSummary.svelte'
+import ShareSnowclone from '$lib/components/ShareSnowclone.svelte'
+import Examples from '$lib/components/Examples.svelte'
 
 export let corporaTokens
 export let initialGrammar = {}
@@ -109,16 +110,22 @@ export let fileTree, filePath = ['']
 
 let generated = ''
 
-const rawGrammar = writable({
-	$TEMPLATE$: [initialGrammar['$TEMPLATE$'] || 'Hello!'],
-	$ORIGIN$: ['#[#$ACTIONS$#]$TEMPLATE$#']
-})
+const rawGrammar = writable({})
 
-Object.entries(initialGrammar).forEach(([name, corpus]) => {
-	if (name !== '$TEMPLATE$') {
-		addToGrammar({ name, corpus })
+function setupRawGrammar(newGrammar) {
+	$rawGrammar = {
+		$TEMPLATE$: [newGrammar['$TEMPLATE$'] || 'Hello!'],
+		$ORIGIN$: ['#[#$ACTIONS$#]$TEMPLATE$#']
 	}
-})
+
+	Object.entries(newGrammar).forEach(([name, corpus]) => {
+		if (name !== '$TEMPLATE$') {
+			addToGrammar({ name, corpus })
+		}
+	})
+}
+
+setupRawGrammar(initialGrammar)
 
 const grammar = derived(rawGrammar, $rawGrammar => {
 	// clean out any keys that have been removed
@@ -194,6 +201,12 @@ function removeFromGrammar(key) {
 	// using "delete" doesn't trigger reactivity. setting to undefined does. 
 	$rawGrammar[key] = undefined
 	delete corporaTokens[key]
+}
+
+async function loadFromTokens(tokens) {
+	corporaTokens = tokens
+	initialGrammar = await loadCorpora(corporaTokens, fetch)
+	setupRawGrammar(initialGrammar)
 }
 
 $: shareUrl = `${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`
@@ -356,10 +369,11 @@ button {
 				bind:value={$rawGrammar.$TEMPLATE$[0]}
 				spellcheck="false"
 				></textarea>
-
 		</div>
 
 		<ShareSnowclone {shareUrl} />
+
+		<Examples />
 
 	</div>
 </div>
