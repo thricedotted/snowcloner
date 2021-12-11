@@ -13,6 +13,7 @@
     padding: var(--double-gap);
     padding-bottom: var(--gap);
     border-radius: 0.2rem;
+    margin-top: var(--gap);
   }
 
   dt {
@@ -103,6 +104,10 @@
 
         <li>
           <b>capitalizeAll:</b> Capitalize the first letter of every word in the text.
+        </li>
+
+        <li>
+          <b>formatNumber:</b> If the text is a number with a lot of digits (e.g., 2147483647), format it more nicely ({parseInt('2147483647').toLocaleString()}).
         </li>
 
         <li>
