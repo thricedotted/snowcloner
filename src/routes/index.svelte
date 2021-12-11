@@ -130,7 +130,8 @@ const grammar = derived(rawGrammar, $rawGrammar => {
 	g.addModifiers(tracery.baseEngModifiers)
 	g.addModifiers({
 		lowercase: s => s.toLowerCase(),
-		uppercase: s => s.toUpperCase()
+		uppercase: s => s.toUpperCase(),
+		formatNumber: s => isNaN(s) ? s : parseInt(s).toLocaleString()
 	})
 
 	return g
