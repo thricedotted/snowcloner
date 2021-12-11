@@ -53,10 +53,6 @@ textarea, select, option, input, button {
 	color: inherit;
 }
 
-button {
-	border: 0.1rem solid var(--color-dark);
-}
-
 textarea {
 	border: 0.1rem solid var(--color-dark);
 	border-radius: 0.2rem;
@@ -157,12 +153,23 @@ summary h2 {
   margin: 0;
 }
 
-a {
-	color: inherit;
-	text-decoration: underline var(--color-primary-mid);
-	transition: 0.15s all;
+button.linklike {
+	all: unset;
+	cursor: pointer;
 }
 
-a:hover, a:focus {
-	text-decoration-color: var(--color-accent);
+a, button.linklike {
+	color: inherit;
+	text-decoration: none;
+	font-style: italic;
+
+	--underline-color: var(--color-primary-mid);
+	box-shadow: inset 0 -0.15em var(--underline-color);
+}
+
+a:hover, a:focus,
+button.linklike:hover, 
+button.linklike:focus,
+button.linklike:active {
+	--underline-color: var(--color-accent);
 }
