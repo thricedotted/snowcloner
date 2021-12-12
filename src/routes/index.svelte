@@ -86,6 +86,7 @@ import { page } from '$app/stores'
 import CorporaPicker from '$lib/components/CorporaPicker.svelte'
 import GrammarSummary from '$lib/components/GrammarSummary.svelte'
 import ShareSnowclone from '$lib/components/ShareSnowclone.svelte'
+import TemplateComposer from '$lib/components/TemplateComposer.svelte'
 import Examples from '$lib/components/Examples.svelte'
 import About from '$lib/components/About.svelte'
 
@@ -302,18 +303,6 @@ h1 {
 	margin-top: calc(2 * var(--double-gap));
 }
 
-textarea {
-	width: 100%;
-	height: 8rem;
-	border: 0.1rem solid var(--color-primary-mid);
-	box-shadow: inset 0 0 0 0.1rem transparent;
-}
-
-textarea:focus {
-	border-color: var(--color-accent);
-	box-shadow: inset 0 0 0 0.1rem var(--color-accent);
-}
-
 button {
 	position: relative;
 	display: block;
@@ -353,13 +342,12 @@ button {
 					{corporaTokens}
 					on:removeFromGrammar={e => removeFromGrammar(e.detail)}
 					on:jumpToCorpus={e => filePath = e.detail}
-					/>
+				/>
 			</div>
 
-			<textarea
-				bind:value={$rawGrammar.$TEMPLATE$[0]}
-				spellcheck="false"
-				></textarea>
+			<TemplateComposer 
+				bind:template={$rawGrammar.$TEMPLATE$[0]}
+			/>
 		</div>
 
 		<ShareSnowclone {shareUrl} />
