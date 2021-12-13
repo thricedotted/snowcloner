@@ -1,9 +1,8 @@
 <script context="module">
-	import qs from 'qs'
-
-	import { encodeObject, decodeObject } from '$lib/util'
-	import examples from '$lib/examples'
 	import Corpus from '$lib/models/Corpus'
+	import examples from '$lib/examples'
+
+	import { decodeObject } from '$lib/util'
 
 	const defaultTokens = examples[0].data
 
@@ -60,7 +59,6 @@ import tracery from 'tracery-grammar'
 
 import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
-import { page } from '$app/stores'
 
 import CorporaPicker from '$lib/components/CorporaPicker.svelte'
 import GrammarSummary from '$lib/components/GrammarSummary.svelte'
@@ -176,7 +174,7 @@ async function loadFromTokens(tokens) {
 	generated = await clone()
 }
 
-$: shareUrl = `${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`
+// $: shareUrl = `${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: $rawGrammar.$TEMPLATE$[0]})})}`
 
 async function clone() {
 	await tick()
@@ -329,7 +327,10 @@ button {
 			/>
 		</div>
 
-		<ShareSnowclone {shareUrl} />
+		<ShareSnowclone 
+			{corporaTokens}
+			template={$rawGrammar.$TEMPLATE$[0]}
+		/>
 
 		<div class="extras">
 			<Examples 

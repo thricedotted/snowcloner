@@ -1,11 +1,18 @@
 <script>
+	import qs from 'qs'
   import copy from 'clipboard-copy'
 
-  export let shareUrl
+  import { dev } from '$app/env'
+  import { page } from '$app/stores'
+	import { encodeObject } from '$lib/util'
+
+  export let corporaTokens, template
 
   let copiedUrl = ''
 
   $: buttonText = copiedUrl === shareUrl ? 'copied!' : 'copy'
+
+  $: shareUrl = `http${dev ? '' : 's'}://${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: template})})}`
 </script>
 
 <style>
