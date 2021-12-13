@@ -66,6 +66,7 @@ import ShareSnowclone from '$lib/components/ShareSnowclone.svelte'
 import TemplateComposer from '$lib/components/TemplateComposer.svelte'
 import Examples from '$lib/components/Examples.svelte'
 import About from '$lib/components/About.svelte'
+import Help from '$lib/components/Help.svelte'
 
 export let corporaTokens
 export let initialGrammar = {}
@@ -338,9 +339,11 @@ button {
 				on:loadTokens={e => loadFromTokens(e.detail)}
 			/>
 
-			<About 
+			<Help 
 				on:jumpToCorpus={e => filePath = e.detail}
 			/>
+
+			<About />
 		</div>
 
 	</div>
