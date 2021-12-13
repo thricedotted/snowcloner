@@ -286,7 +286,7 @@ h1 {
 	margin-top: calc(3 * var(--double-gap));
 }
 
-.editor::before, .about::before {
+.editor::before, .extras::before {
 	content: ' ';
 	font-size: 1.2rem;
 	position: relative;
@@ -299,7 +299,7 @@ h1 {
 	opacity: 0.5;
 }
 
-.about {
+.extras {
 	margin-top: calc(2 * var(--double-gap));
 }
 
@@ -352,12 +352,12 @@ button {
 
 		<ShareSnowclone {shareUrl} />
 
-		<Examples 
-			on:logTokens={() => console.log(corporaTokens)}
-			on:loadTokens={e => loadFromTokens(e.detail)}
-		/>
+		<div class="extras">
+			<Examples 
+				on:logTokens={() => console.log(corporaTokens)}
+				on:loadTokens={e => loadFromTokens(e.detail)}
+			/>
 
-		<div class="about">
 			<About 
 				on:jumpToCorpus={e => filePath = e.detail}
 			/>
