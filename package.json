@@ -22,6 +22,7 @@
     "@sveltejs/adapter-vercel": "next",
     "@sveltejs/kit": "next",
     "clipboard-copy": "^4.0.1",
+    "localforage": "^1.10.0",
     "svelte": "^3.44.0"
   }
 }
