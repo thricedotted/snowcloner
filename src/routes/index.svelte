@@ -1,32 +1,11 @@
 <script context="module">
 	import qs from 'qs'
 
-	import { browser } from '$app/env'
-
+	import { encodeObject, decodeObject } from '$lib/util'
 	import examples from '$lib/examples'
 	import Corpus from '$lib/models/Corpus'
 
 	const defaultTokens = examples[0].data
-
-	function encodeObject(object) {
-		const stringified = JSON.stringify(object)
-		return browser
-					 ? btoa(stringified)
-					 : Buffer.from(stringified).toString('base64')
-	}
-
-	function decodeObject(object) {
-		try {
-			const s = browser 
-								? decodeURIComponent(atob(decodeURIComponent(object)))
-								: Buffer.from(object, 'base64').toString()
-
-			return JSON.parse(s)
-		}
-		catch {
-			return null
-		}
-	}
 
 	async function loadCorpus(key, paths, fetch) {
 		const { f, d } = paths
