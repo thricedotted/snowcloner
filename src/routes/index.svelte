@@ -64,7 +64,7 @@ import CorporaPicker from '$lib/components/CorporaPicker.svelte'
 import GrammarSummary from '$lib/components/GrammarSummary.svelte'
 import ShareSnowclone from '$lib/components/ShareSnowclone.svelte'
 import TemplateComposer from '$lib/components/TemplateComposer.svelte'
-import Examples from '$lib/components/Examples.svelte'
+import SavedSnowclones from '$lib/components/SavedSnowclones.svelte'
 import About from '$lib/components/About.svelte'
 import Help from '$lib/components/Help.svelte'
 
@@ -334,7 +334,7 @@ button {
 		/>
 
 		<div class="extras">
-			<Examples 
+			<SavedSnowclones 
 				on:logTokens={() => console.log(corporaTokens)}
 				on:loadTokens={e => loadFromTokens(e.detail)}
 			/>

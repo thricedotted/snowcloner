@@ -1,5 +1,6 @@
 const examples = [
   {
+    id: 1,
     name: 'Little Treat',
     data: {
       $TEMPLATE$: '~ #animal.s.capitalize# can have a little #veggie# as a treat ~ #cute#',
@@ -22,9 +23,10 @@ const examples = [
   },
 
   {
+    id: 2,
     name: 'Apple Horse Sport!',
     data: {
-      $TEMPLATE$: '#apple# #horse# #sport#!',
+      $TEMPLATE$: '#apple# #horse# #sport.capitalizeAll#!',
 
       apple: {
         f: ['foods', 'apple_cultivars.json'],
@@ -44,6 +46,7 @@ const examples = [
   },
 
   {
+    id: 3,
     name: 'Identity Studies',
     data: {
       $TEMPLATE$: 'Be your own #noun#: now, you are #noun#.',
@@ -56,6 +59,7 @@ const examples = [
   },
 
   {
+    id: 4,
     name: 'Far Away',
     data: {
       $TEMPLATE$: '#weather.lowercase#\nin #p-city.lowercase#\n\nmy heart is #size.a#\n#paint.lowercase# #paint.lowercase#\nsurrounded by #material#\n\n#p-population.formatNumber# mouths open at once:\n#fortune.uppercase#\n\n#p-state.lowercase# is so far away',
