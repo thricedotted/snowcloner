@@ -17,6 +17,16 @@
       name = ''
     }
   }
+
+  function embedLink(s) {
+    try {
+      return s.replace(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, `<a href="$&">$&</a>`)
+    } 
+    catch {
+      return s
+    }
+  }
+
 </script>
 
 <style>
@@ -45,20 +55,27 @@
   .add-to-grammar input:focus {
     border-color: var(--color-primary-dark);
   }
+
+  .description :global(a) {
+    text-decoration: underline;
+    box-shadow: none;
+  }
+
+  .description :global(a:hover), 
+  .description :global(a:focus), 
+  .description :global(a:active) {
+    text-decoration-color: var(--color-accent);
+  }
 </style>
 
 <div class="description">
   {#if corpus.description}
-    {corpus.description}
+    {@html embedLink(corpus.description)}
   {/if}
 
-  {#if corpus.source && corpus.source.startsWith}
-    {@html corpus.description ? '<br>' : ''}
-    {#if corpus.source.startsWith('http')}
-      <a href={corpus.source}>{corpus.source}</a>
-    {:else}
-      {corpus.source}
-    {/if}
+  {#if corpus.source}
+    {@html embedLink(corpus.description) ? '<br>' : ''}
+    {@html embedLink(corpus.source)}
   {/if}
 </div>
 
