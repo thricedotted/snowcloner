@@ -335,6 +335,8 @@ button {
 
 		<div class="extras">
 			<SavedSnowclones 
+				{corporaTokens}
+				template={$rawGrammar.$TEMPLATE$[0]}
 				on:logTokens={() => console.log(corporaTokens)}
 				on:loadTokens={e => loadFromTokens(e.detail)}
 			/>

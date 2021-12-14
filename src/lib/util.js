@@ -6,6 +6,8 @@ const DATA_DIR = dev
                  ? './node_modules/corpora/data'
                  : './corpora/data'
 
+const STORE_KEY = 'snowcloneStore'
+
 function formatCorpusName(s) {
   return s.replace('.json', '')
           .replace(/_/g, ' ')
@@ -33,8 +35,8 @@ function formatCorpusName(s) {
 
 export {
   DATA_DIR,
+  STORE_KEY,
   formatCorpusName,
   encodeObject,
   decodeObject
-
 }

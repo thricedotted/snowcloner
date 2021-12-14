@@ -6,6 +6,8 @@
   import { page } from '$app/stores'
 	import { encodeObject } from '$lib/util'
 
+  import SmallButton from '$lib/components/SmallButton.svelte'
+
   export let corporaTokens, template
 
   let copiedUrl = ''
@@ -31,16 +33,6 @@
     text-overflow: ellipsis;
   }
 
-  button {
-    border: 0;
-    border-radius: 0.2rem;
-    box-shadow: none;
-
-    background: var(--color-primary-dark);
-    color: var(--color-bg);
-
-    font-size: var(--font-smallest);
-  }
 </style>
 
 <div class="share">
@@ -50,9 +42,9 @@
       readonly 
       value={shareUrl}
       >
-    <button
+    <SmallButton
       on:click={() => { copy(shareUrl); copiedUrl = shareUrl }}
       >{buttonText}
-    </button>
+    </SmallButton>
   </div>
 </div>

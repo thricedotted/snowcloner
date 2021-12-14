@@ -1,7 +1,8 @@
 <script>
   import { createEventDispatcher } from 'svelte'
 
-  import TokenPath from './TokenPath.svelte'
+  import ConfirmButton from '$lib/components/ConfirmButton.svelte'
+  import TokenPath from '$lib/components/TokenPath.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -30,7 +31,7 @@ ul {
 li {
   display: inline-block;
   margin: 0 var(--shim);
-  padding: 0 var(--shim);
+  padding-left: var(--shim);
   border-radius: 0.2rem;
   /* max-height: 3rem; */
   overflow: auto;
@@ -43,21 +44,6 @@ li {
 
 details:not([open]) {
   margin-bottom: var(--shim);
-}
-
-button {
-  font-size: var(--font-smallest);
-  padding: 0 var(--shim);
-  margin: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  color: var(--color-accent);
-}
-
-button:hover, button:focus {
-  transform: none;
-  color: var(--color-primary-mid);
 }
 
 .empty-grammar::before {
@@ -74,7 +60,7 @@ button:hover, button:focus {
 <details open>
 <summary><h2>Grammar</h2> ({entries.length})</summary>
 
-{#if entries.length == 0}
+{#if entries.length === 0}
   <p class="empty-grammar">Add tokens using the <b>corpora explorer</b>!</p>
 {:else}
   <label>
@@ -84,7 +70,6 @@ button:hover, button:focus {
   <ul>
     {#each entries as [key, value]}
         <li>
-          <button title="Remove &ldquo;{key}&rdquo; from grammar" on:click={() => removeFromGrammar(key)}>×</button>
           {#if key.startsWith('_')}
             {@html extractSubkeys(value[0]).join(', ')} ({value.length})
           {:else}
@@ -99,6 +84,13 @@ button:hover, button:focus {
             />
           </span>
           {/if}
+
+          <ConfirmButton 
+            style="padding: 0 var(--gap); border-radius: 0;"
+            defaultText="×"
+            confirmText="delete?"
+            title="Remove &ldquo;{key}&rdquo; from grammar" on:confirm={() => removeFromGrammar(key)}
+          />
         </li>
     {/each}
   </ul>

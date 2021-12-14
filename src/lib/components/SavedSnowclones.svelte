@@ -1,8 +1,36 @@
 <script>
-  import Details from '$lib/components/Details.svelte'
-  import SavedSnowcloneList from '$lib/components/SavedSnowcloneList.svelte'
+  import { onMount } from 'svelte'
 
   import examples from '$lib/examples'
+  import { snowcloneStore } from '$lib/stores'
+
+  import Details from '$lib/components/Details.svelte'
+  import ConfirmButton from '$lib/components/ConfirmButton.svelte'
+  import SmallButton from '$lib/components/SmallButton.svelte'
+  import SnowcloneLoader from '$lib/components/SnowcloneLoader.svelte'
+
+  export let corporaTokens, template
+
+  onMount(async () => await snowcloneStore.initialize())
+
+  async function addSnowclone() {
+    const name = prompt('Name your snowclone!', `Snowclone #${$snowcloneStore.length + 1}`)
+
+    if (name) {
+      const data = {
+        ...corporaTokens,
+        $TEMPLATE$: template
+      }
+
+      await snowcloneStore.add({ name, data })
+    }
+  }
+
+  async function removeSnowclone(i) {
+    await snowcloneStore.remove(i)
+  }
+
+  // $: console.log($snowcloneStore)
 </script>
 
 <style>
@@ -16,6 +44,26 @@
   h3 {
     margin: 0;
   }
+
+  h3:not(:first-of-type) {
+    margin-top: var(--double-gap);
+  }
+
+  ul {
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: var(--gap);
+    list-style: square inside;
+    /* columns: 16em; */
+  }
+
+  li {
+    margin: var(--gap) 0;
+  }
+
+  li::marker {
+    color: var(--color-primary-mid);
+  }
 </style>
 
 <Details>
@@ -23,14 +71,46 @@
 
   <div class="content">
     <h3>Saved Snowclones</h3>
-    <p>You don't have any saved snowclones!</p>
+
+    <ul>
+    {#each $snowcloneStore as snowclone, i (snowclone.id)}
+      <li>
+        <SnowcloneLoader
+          {snowclone}
+          on:loadTokens
+        />
+
+        <ConfirmButton 
+          defaultText="×"
+          confirmText="delete?"
+          title="Delete &ldquo;{snowclone.name}&rdquo;"
+          on:confirm={() => removeSnowclone(i)}
+        />
+      </li>
+
+    {:else}
+      <p>You don't have any saved snowclones!</p>
+    {/each}
+    </ul>
+
+    <SmallButton
+      on:click={addSnowclone}
+      >save current snowclone
+    </SmallButton>
 
     <h3>Examples</h3>
 
-    <SavedSnowcloneList
-      savedSnowclones={examples}
-      on:loadTokens
-    />
+    <ul>
+    {#each examples as snowclone}
+      <li>
+        <SnowcloneLoader
+          {snowclone}
+          on:loadTokens
+        />
+      </li>
+    {/each}
+    </ul>
+
   </div>
 
 </Details>
