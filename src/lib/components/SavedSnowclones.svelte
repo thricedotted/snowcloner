@@ -81,11 +81,11 @@
         />
 
         <ConfirmButton 
-          defaultText="×"
-          confirmText="delete?"
+          let:confirming
           title="Delete &ldquo;{snowclone.name}&rdquo;"
           on:confirm={() => removeSnowclone(i)}
-        />
+          >{confirming ? 'delete?' : '×'}
+        </ConfirmButton>
       </li>
 
     {:else}

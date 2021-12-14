@@ -86,11 +86,12 @@ details:not([open]) {
           {/if}
 
           <ConfirmButton 
+            let:confirming
             style="padding: 0 var(--gap); border-radius: 0;"
-            defaultText="×"
-            confirmText="delete?"
-            title="Remove &ldquo;{key}&rdquo; from grammar" on:confirm={() => removeFromGrammar(key)}
-          />
+            title="Remove &ldquo;{key}&rdquo; from grammar" 
+            on:confirm={() => removeFromGrammar(key)}
+            >{confirming ? 'delete?' : '×'}
+          </ConfirmButton>
         </li>
     {/each}
   </ul>

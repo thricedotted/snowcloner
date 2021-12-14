@@ -1,15 +1,12 @@
 <script>
   import { createEventDispatcher } from 'svelte'
 
-  export let title
-  export let defaultText, confirmText
-  export let style
+  export let title = undefined
+  export let style = undefined
 
   let confirming = false
 
   const dispatch = createEventDispatcher()
-
-  $: buttonText = confirming ? confirmText : defaultText
 
   function confirmOrDelete() {
     if (!confirming) {
@@ -52,5 +49,5 @@
   {title}
   class:confirming
   on:click|stopPropagation={confirmOrDelete}
-  >{buttonText}
+  ><slot {confirming}></slot>
 </button>
