@@ -52,7 +52,7 @@
     {corpus.description}
   {/if}
 
-  {#if corpus.source}
+  {#if corpus.source && corpus.source.startsWith}
     {@html corpus.description ? '<br>' : ''}
     {#if corpus.source.startsWith('http')}
       <a href={corpus.source}>{corpus.source}</a>
