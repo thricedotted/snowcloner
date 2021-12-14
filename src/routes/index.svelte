@@ -165,7 +165,10 @@ function addToGrammar({ name, corpus }) {
 function removeFromGrammar(key) {
 	// using "delete" doesn't trigger reactivity. setting to undefined does. 
 	$rawGrammar[key] = undefined
-	delete corporaTokens[key]
+
+	// structured tokens are prefixed with an underscore in $rawGrammar
+	// ... but not in corporaTokens! need to make sure we remove properly
+	delete corporaTokens[key.startsWith('_') ? key.slice(1) : key]
 }
 
 async function loadFromTokens(tokens) {
