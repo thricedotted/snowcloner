@@ -9,18 +9,30 @@
 
   const dispatch = createEventDispatcher()
 
+  function sanitizeTokenName(s) {
+    return s.replace(/\./g, '-')
+            .replace(/\#/g, '')
+  }
+
   function addToGrammar() {
     name = name ? name : corpus.placeholder || prompt('What are you calling this token?')
 
     if (name) {
-      dispatch('addToGrammar', { name, corpus })
+      // . is a special character in Tracery -- can't allow it in token names
+      dispatch('addToGrammar', { 
+        name: sanitizeTokenName(name), 
+        corpus 
+      })
       name = ''
     }
   }
 
   function embedLink(s) {
     try {
-      return s.replace(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, `<a href="$&">$&</a>`)
+      return s.replace(
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, 
+        `<a href="$&">$&</a>`
+      )
     } 
     catch {
       return s
