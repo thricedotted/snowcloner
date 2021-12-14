@@ -33,10 +33,34 @@ function decodeObject(object) {
 	}
 }
 
+function encodeSpecialChars(s) {
+	try {
+		const specialCharMap = {
+			// for tracery
+			':': '&colon;',
+			',': '&comma;',
+			// for user input
+			'<': '&lt;',
+			'>': '&gt;',
+		}
+
+		const regex = new RegExp(Object.keys(specialCharMap).join('|'), 'g')
+
+		return s.replace(regex, match => {
+			return specialCharMap[match]
+		})
+	}
+	catch {
+		// we're probably here because s isn't a string
+		return s
+	}
+}
+
 export {
   DATA_DIR,
   STORE_KEY,
   formatCorpusName,
   encodeObject,
-  decodeObject
+  decodeObject,
+	encodeSpecialChars
 }

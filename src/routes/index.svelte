@@ -60,6 +60,8 @@ import tracery from 'tracery-grammar'
 import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
+import { encodeSpecialChars } from "$lib/util"
+
 import CorporaPicker from '$lib/components/CorporaPicker.svelte'
 import GrammarSummary from '$lib/components/GrammarSummary.svelte'
 import ShareSnowclone from '$lib/components/ShareSnowclone.svelte'
@@ -150,6 +152,7 @@ function addToGrammar({ name, corpus }) {
 		const actionName = `_${name}`
 		const mapped = data.map(choice => {
 			return Object.entries(flattenStructured(choice, name))
+						 .map(([k, v]) => [k, encodeSpecialChars(v)])
 						 .map(([k, v]) => `[${k}:${v}]`)
 						 .join('')
 		})
@@ -182,12 +185,14 @@ async function loadFromTokens(tokens) {
 
 async function clone() {
 	await tick()
-	return $grammar.flatten('#$ORIGIN$#')
+	return encodeSpecialChars($grammar.flatten('#$ORIGIN$#'))
 }
 
 onMount(async () => {
 	generated = await clone()
 })
+
+$: console.log($rawGrammar)
 </script>
 
 <style>
@@ -312,7 +317,7 @@ button {
 
 	<div class="compose">
 		<div class="generate">
-			<div class="generated">{generated}</div>
+			<div class="generated">{@html generated}</div>
 			<button on:click={async () => generated = await clone()}>generate!</button>
 		</div>
 
