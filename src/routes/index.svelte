@@ -4,7 +4,7 @@
 
 	import { decodeObject } from '$lib/util'
 
-	const defaultTokens = examples[0].data
+	const defaultTokens = JSON.parse(JSON.stringify(examples[0].data))
 
 	async function loadCorpus(key, paths, fetch) {
 		const { f, d } = paths
@@ -169,7 +169,7 @@ function removeFromGrammar(key) {
 }
 
 async function loadFromTokens(tokens) {
-	corporaTokens = tokens
+	corporaTokens = JSON.parse(JSON.stringify(tokens))
 	initialGrammar = await loadCorpora(corporaTokens, fetch)
 	setupRawGrammar(initialGrammar)
 	generated = await clone()
