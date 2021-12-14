@@ -13,25 +13,25 @@ function formatCorpusName(s) {
           .replace(/_/g, ' ')
 }
 
-	function encodeObject(object) {
-		const stringified = JSON.stringify(object)
-		return browser
-					 ? btoa(stringified)
-					 : Buffer.from(stringified).toString('base64')
-	}
+function encodeObject(object) {
+	const stringified = JSON.stringify(object)
+	return browser
+					? btoa(stringified)
+					: Buffer.from(stringified).toString('base64')
+}
 
-	function decodeObject(object) {
-		try {
-			const s = browser 
-								? decodeURIComponent(atob(decodeURIComponent(object)))
-								: Buffer.from(object, 'base64').toString()
+function decodeObject(object) {
+	try {
+		const s = browser 
+							? decodeURIComponent(atob(decodeURIComponent(object)))
+							: Buffer.from(object, 'base64').toString()
 
-			return JSON.parse(s)
-		}
-		catch {
-			return null
-		}
+		return JSON.parse(s)
 	}
+	catch {
+		return null
+	}
+}
 
 export {
   DATA_DIR,
