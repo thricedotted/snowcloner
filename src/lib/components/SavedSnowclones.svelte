@@ -7,10 +7,6 @@
 
   export let snowcloneStore
 
-  async function removeSnowclone(i) {
-    await snowcloneStore.remove(i)
-  }
-
   // $: console.log($snowcloneStore)
 </script>
 
@@ -53,6 +49,10 @@
   <div class="content">
     <h3>Saved Snowclones</h3>
 
+    <p>
+      These snowclones are saved locally in your browser.
+    </p>
+
     <ul>
     {#each $snowcloneStore as snowclone, i (snowclone.id)}
       <li>
@@ -64,7 +64,7 @@
         <ConfirmButton 
           let:confirming
           title="Delete &ldquo;{snowclone.name}&rdquo;"
-          on:confirm={() => removeSnowclone(i)}
+          on:confirm={() => snowcloneStore.remove(i)}
           >{confirming ? 'delete?' : '×'}
         </ConfirmButton>
       </li>
@@ -75,6 +75,10 @@
     </ul>
 
     <h3>Examples</h3>
+
+    <p>
+      Need some inspiration? Check out these examples!
+    </p>
 
     <ul>
     {#each examples as snowclone}
