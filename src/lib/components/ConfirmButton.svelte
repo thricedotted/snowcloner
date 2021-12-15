@@ -40,14 +40,11 @@
   }
 </style>
 
-<svelte:body
-  on:click={() => confirming = false}
-/>
-
 <button 
   {style}
   {title}
   class:confirming
   on:click|stopPropagation={confirmOrDelete}
+  on:blur={() => confirming = false}
   ><slot {confirming}></slot>
 </button>
