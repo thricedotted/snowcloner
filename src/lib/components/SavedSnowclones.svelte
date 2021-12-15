@@ -1,30 +1,11 @@
 <script>
-  import { onMount } from 'svelte'
-
   import examples from '$lib/examples'
-  import { snowcloneStore } from '$lib/stores'
 
   import Details from '$lib/components/Details.svelte'
   import ConfirmButton from '$lib/components/ConfirmButton.svelte'
-  import SmallButton from '$lib/components/SmallButton.svelte'
   import SnowcloneLoader from '$lib/components/SnowcloneLoader.svelte'
 
-  export let corporaTokens, template
-
-  onMount(async () => await snowcloneStore.initialize())
-
-  async function addSnowclone() {
-    const name = prompt('Name your snowclone!', `Snowclone #${$snowcloneStore.length + 1}`)
-
-    if (name) {
-      const data = {
-        ...corporaTokens,
-        $TEMPLATE$: template
-      }
-
-      await snowcloneStore.add({ name, data })
-    }
-  }
+  export let snowcloneStore
 
   async function removeSnowclone(i) {
     await snowcloneStore.remove(i)
@@ -92,11 +73,6 @@
       <p>You don't have any saved snowclones!</p>
     {/each}
     </ul>
-
-    <SmallButton
-      on:click={addSnowclone}
-      >save current snowclone
-    </SmallButton>
 
     <h3>Examples</h3>
 

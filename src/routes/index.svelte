@@ -60,6 +60,7 @@ import tracery from 'tracery-grammar'
 import { onMount, tick } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
+import { snowcloneStore } from '$lib/stores'
 import { encodeSpecialChars } from "$lib/util"
 
 import CorporaPicker from '$lib/components/CorporaPicker.svelte'
@@ -69,6 +70,7 @@ import TemplateComposer from '$lib/components/TemplateComposer.svelte'
 import SavedSnowclones from '$lib/components/SavedSnowclones.svelte'
 import About from '$lib/components/About.svelte'
 import Help from '$lib/components/Help.svelte'
+import ComposerActions from '../lib/components/ComposerActions.svelte';
 
 export let corporaTokens
 export let initialGrammar = {}
@@ -189,6 +191,7 @@ async function clone() {
 }
 
 onMount(async () => {
+	await snowcloneStore.initialize()
 	generated = await clone()
 })
 
@@ -336,6 +339,13 @@ button {
 			/>
 		</div>
 
+		<ComposerActions
+			{snowcloneStore}
+			{corporaTokens}
+			template={$rawGrammar.$TEMPLATE$[0]}
+			on:reset={() => console.log('reset')}
+		/>
+
 		<ShareSnowclone 
 			{corporaTokens}
 			template={$rawGrammar.$TEMPLATE$[0]}
@@ -343,8 +353,7 @@ button {
 
 		<div class="extras">
 			<SavedSnowclones 
-				{corporaTokens}
-				template={$rawGrammar.$TEMPLATE$[0]}
+				{snowcloneStore}
 				on:logTokens={() => console.log(corporaTokens)}
 				on:loadTokens={e => loadFromTokens(e.detail)}
 			/>

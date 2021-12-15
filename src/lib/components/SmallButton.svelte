@@ -1,3 +1,7 @@
+<script>
+  export let style = undefined
+</script>
+
 <style>
   button {
     border: 0;
@@ -19,6 +23,7 @@
 </style>
 
 <button
+  {style}
   on:click
   ><slot></slot>
 </button>
