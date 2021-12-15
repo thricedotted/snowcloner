@@ -78,7 +78,7 @@ select {
 	padding: var(--shim);
 
 	cursor: pointer;
-	transition: 0.3s all;
+	/* transition: 0.3s all; */
 
 	width: 100%;
 }
@@ -138,6 +138,15 @@ button:hover, button:focus {
 button:active {
 	transform: translateY(0.1rem);
 	box-shadow: none;
+}
+
+button:focus, input:focus, select:focus, summary:focus {
+	outline: 0.2rem solid var(--color-accent);
+	outline-offset: 0.2rem;
+}
+
+textarea:focus {
+	outline: none;
 }
 
 label {
