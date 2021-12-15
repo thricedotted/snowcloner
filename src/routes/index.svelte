@@ -202,8 +202,6 @@ onMount(async () => {
 	await snowcloneStore.initialize()
 	generated = await clone()
 })
-
-$: console.log($rawGrammar)
 </script>
 
 <style>
