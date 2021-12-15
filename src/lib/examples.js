@@ -106,8 +106,48 @@ const examples = [
         ]
       }
     }
-  }
+  },
 
+  {
+    id: 5,
+    name: 'Tarot Quick Draw',
+    data: {
+
+      $TEMPLATE$: "== #tarot1-name.uppercase# ==\nThis card concerns #tarot1-keywords.uppercase# in the context of #event.uppercase#.\nCONSIDER #tarot1-meanings-light.lowercase#.\nBEWARE #tarot1-meanings-shadow.lowercase#.\n\n\n== #tarot2-name.uppercase# ==\nThis card concerns #tarot2-keywords.uppercase# in the context of #event.uppercase#.\nCONSIDER #tarot2-meanings-light.lowercase#.\nBEWARE #tarot2-meanings-shadow.lowercase#.\n\n\n== #tarot3-name.uppercase# ==\nThis card concerns #tarot3-keywords.uppercase# in the context of #event.uppercase#.\nCONSIDER #tarot3-meanings-light.lowercase#.\nBEWARE #tarot3-meanings-shadow.lowercase#.",
+
+      tarot1: {
+        f: ['divination', 'tarot_interpretations.json'],
+        d: [
+          { name: 'key', selected: 'tarot_interpretations' },
+          { name: 'filter', selected: 'all' }
+        ]
+      },
+
+      tarot2: {
+        f: ['divination', 'tarot_interpretations.json'],
+        d: [
+          { name: 'key', selected: 'tarot_interpretations' },
+          { name: 'filter', selected: 'all' }
+        ]
+      },
+
+      tarot3: {
+        f: ['divination', 'tarot_interpretations.json'],
+        d: [
+          { name: 'key', selected: 'tarot_interpretations' },
+          { name: 'filter', selected: 'all' }
+        ]
+      },
+
+      event: {
+        f: ['archetypes', 'event.json'],
+        d: [
+          { name: 'key', selected: 'events' },
+          { name: 'filter', selected: 'name' }
+        ]
+      }
+    }
+  }
 ]
 
 export default examples
