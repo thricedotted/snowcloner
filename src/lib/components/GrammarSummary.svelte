@@ -68,7 +68,7 @@ details:not([open]) {
     Show corpus location?
   </label>
   <ul>
-    {#each entries as [key, value]}
+    {#each entries as [key, value] (key)}
         <li>
           {#if key.startsWith('_')}
             {@html extractSubkeys(value[0]).join(', ')} ({value.length})
