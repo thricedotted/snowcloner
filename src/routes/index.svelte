@@ -351,7 +351,11 @@ button {
 			{snowcloneStore}
 			{corporaTokens}
 			template={$rawGrammar.$TEMPLATE$[0]}
-			on:reset={() => console.log('reset')}
+			on:reset={() => { 
+				corporaTokens = {}
+				loadFromTokens(corporaTokens)
+				$rawGrammar.$TEMPLATE$[0] = '' 
+			}}
 		/>
 
 		<ShareSnowclone 
