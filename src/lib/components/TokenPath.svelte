@@ -21,12 +21,20 @@
 
     text-decoration: underline dotted;
     
+    border-radius: 0;
   }
 
   button:hover, button:active, button:focus {
     transform: none;
     text-decoration: underline solid;
   }
+
+  button:focus {
+    background: var(--color-primary-mid);
+    outline-color: var(--color-primary-mid);
+    outline-offset: 0;
+  }
+
 </style>
 
 {#each f as segment, i}
