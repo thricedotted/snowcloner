@@ -140,7 +140,12 @@ button:active {
 	box-shadow: none;
 }
 
-button:focus, input:focus, select:focus, summary:focus {
+a:focus,
+button:focus, 
+input:focus, 
+select:focus, 
+summary:focus,
+button.linklike:focus {
 	outline: 0.2rem solid var(--color-accent);
 	outline-offset: 0.2rem;
 }

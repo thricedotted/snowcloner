@@ -87,7 +87,7 @@ details:not([open]) {
 
           <ConfirmButton 
             let:confirming
-            style="padding: 0 var(--gap); border-radius: 0;"
+            style="padding: 0 var(--gap); border-radius: 0; outline: none;"
             title="Remove &ldquo;{key}&rdquo; from grammar" 
             on:confirm={() => removeFromGrammar(key)}
             >{confirming ? 'delete?' : '×'}
