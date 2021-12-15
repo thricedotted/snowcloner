@@ -12,6 +12,7 @@
   function sanitizeTokenName(s) {
     return s.replace(/\./g, '-')
             .replace(/\#/g, '')
+            .replace(/^_+/, '')
   }
 
   function addToGrammar() {
