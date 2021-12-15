@@ -125,6 +125,14 @@ const grammar = derived(rawGrammar, $rawGrammar => {
 function addToGrammar({ name, corpus }) {
 	const { filePath, path, data } = corpus
 
+	if (
+		(typeof data[0] === 'string' && name in $rawGrammar) ||
+		(typeof data[0] === 'object' && `_${name}` in $rawGrammar)
+	) {
+		const choice = confirm(`A token called "${name}" already exists! Do you want to overwrite it?`)
+		if (!choice) return
+	}
+
 	// we have to clone these arrays, or they will point to corpus refs that will change!
 	corporaTokens[name] = { 
 		f: [...filePath],
