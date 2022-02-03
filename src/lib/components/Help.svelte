@@ -6,16 +6,6 @@
   import TokenPath from '$lib/components/TokenPath.svelte'
 </script>
 
-<style>
-  ul {
-    padding-left: var(--double-gap);
-  }
-
-  li {
-    margin-top: var(--shim);
-  }
-</style>
-
 <Details open="true">
   <h2 slot="summary">Help!</h2>
 
@@ -110,7 +100,7 @@
       <span slot="title">How do I share a snowclone I made with a friend?</span>
 
       <p>
-        If you want to share just the generated text, you can copy or screenshot it. If you want to send the snowclone itself, copy and send them the share link! This link changes every time you change your template or grammar &mdash; that is, it's not pointing to a document that's saved anywhere, but it does contain all the information necessary for reconstructing your snowclone.
+        If you want to share just the generated text, you can copy or screenshot it. If you want to send the snowclone itself, copy and send them the share link! This link changes every time you change your template or grammar &mdash; that is, it's not pointing to a file that's saved anywhere, but it does contain all the information necessary for reconstructing your snowclone.
       </p>
     </Definition>
 
@@ -124,3 +114,13 @@
 
   </DefinitionList>
 </Details>
+
+<style>
+  ul {
+    padding-left: var(--double-gap);
+  }
+
+  li {
+    margin-top: var(--shim);
+  }
+</style>
