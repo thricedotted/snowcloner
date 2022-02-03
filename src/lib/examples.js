@@ -113,7 +113,7 @@ const examples = [
     name: 'Tarot Quick Draw',
     data: {
 
-      $TEMPLATE$: "== #tarot1-name.uppercase# ==\nThis card concerns #tarot1-keywords.uppercase# in the context of #event.uppercase#.\nCONSIDER #tarot1-meanings-light.lowercase#.\nBEWARE #tarot1-meanings-shadow.lowercase#.\n\n\n== #tarot2-name.uppercase# ==\nThis card concerns #tarot2-keywords.uppercase# in the context of #event.uppercase#.\nCONSIDER #tarot2-meanings-light.lowercase#.\nBEWARE #tarot2-meanings-shadow.lowercase#.\n\n\n== #tarot3-name.uppercase# ==\nThis card concerns #tarot3-keywords.uppercase# in the context of #event.uppercase#.\nCONSIDER #tarot3-meanings-light.lowercase#.\nBEWARE #tarot3-meanings-shadow.lowercase#.",
+      $TEMPLATE$: "== #tarot1-name.uppercase# ==\nThis card concerns #tarot1-keywords.lowercase#.\nConsider #tarot1-meanings-light.lowercase#, and beware #tarot1-meanings-shadow.lowercase#.\n\n\n== #tarot2-name.uppercase# ==\nThis card concerns #tarot2-keywords.lowercase#.\nConsider #tarot2-meanings-light.lowercase#, and beware #tarot2-meanings-shadow.lowercase#.\n\n\n== #tarot3-name.uppercase# ==\nThis card concerns #tarot3-keywords.lowercase#.\nConsider #tarot3-meanings-light.lowercase#, and beware #tarot3-meanings-shadow.lowercase#.",
 
       tarot1: {
         f: ['divination', 'tarot_interpretations.json'],
@@ -138,14 +138,6 @@ const examples = [
           { name: 'filter', selected: 'all' }
         ]
       },
-
-      event: {
-        f: ['archetypes', 'event.json'],
-        d: [
-          { name: 'key', selected: 'events' },
-          { name: 'filter', selected: 'name' }
-        ]
-      }
     }
   }
 ]
