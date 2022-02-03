@@ -243,7 +243,7 @@ h1 {
 	text-transform: lowercase;
 }
 
-.explorer, .compose {
+.explorer, .composer {
 	padding: 1rem;
 	overflow: auto;
 }
@@ -256,7 +256,7 @@ h1 {
 	border-right: 0.1rem solid currentColor;
 }
 
-.compose > :global(*) {
+.composer > :global(*) {
 	position: relative;
 	margin: 0 auto var(--double-gap) auto;
 	max-width: 36rem;
@@ -266,22 +266,20 @@ h1 {
 	font-size: var(--font-smallest);
 }
 
-.generate {
+.generator {
 	background: var(--color-primary-dark);
 	color: var(--color-bg);
 	padding: 1rem 1rem 0 1rem;
-	border-radius: 0.2rem;
+	border-radius: 0 0 0.2rem 0.2rem;
+	margin-top: calc(-1 * var(--shim));
+	margin-bottom: calc(2 * var(--double-gap));
 }
 
 .generated {
 	white-space: pre-wrap;
 }
 
-.editor {
-	margin-top: calc(3 * var(--double-gap));
-}
-
-.editor::before, .extras::before {
+.extras::before {
 	content: ' ';
 	font-size: 1.2rem;
 	position: relative;
@@ -324,12 +322,7 @@ button {
 			/>
 	</div>
 
-	<div class="compose">
-		<div class="generate">
-			<div class="generated">{@html generated}</div>
-			<button on:click={async () => generated = await clone()}>generate!</button>
-		</div>
-
+	<div class="composer">
 		<div class="editor">
 			<div class="grammar">
 				<GrammarSummary 
@@ -343,6 +336,11 @@ button {
 			<TemplateComposer 
 				bind:template={$rawGrammar.$TEMPLATE$[0]}
 			/>
+
+			<div class="generator">
+				<div class="generated">{@html generated}</div>
+				<button on:click={async () => generated = await clone()}>generate!</button>
+			</div>
 		</div>
 
 		<ComposerActions

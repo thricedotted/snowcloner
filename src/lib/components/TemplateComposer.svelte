@@ -23,8 +23,10 @@
 <style>
   textarea {
     width: 100%;
-    min-height: 8rem;
+    min-height: 6rem;
     border: 0.1rem solid var(--color-primary-mid);
+    border-radius: 0.2rem 0.2rem 0 0;
+    border-bottom-color: var(--color-primary-dark);
     box-shadow: inset 0 0 0 0.1rem transparent;
     overflow-y: hidden;
     resize: none;

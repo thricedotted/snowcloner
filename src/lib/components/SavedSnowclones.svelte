@@ -7,7 +7,7 @@
 
   export let snowcloneStore
 
-  // $: console.log($snowcloneStore)
+  $: console.log($snowcloneStore)
 </script>
 
 <style>
