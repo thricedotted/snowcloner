@@ -5,6 +5,23 @@
 
 </script>
 
+<div class="summary">
+  <details open>
+    <summary>{data.length} items</summary>
+    <ul>
+      {#each data as item}
+      <li>
+        {#if typeof item !== 'object'}
+          {item}
+        {:else}
+          <StructuredToken token={item} />
+        {/if}
+      </li>
+      {/each}
+    </ul>
+  </details>
+</div>
+
 <style>
   ul {
     margin: var(--gap) 0;
@@ -29,20 +46,3 @@
     color: var(--color-primary-light);
   }
 </style>
-
-<div class="summary">
-  <details open>
-    <summary>{data.length} items</summary>
-    <ul>
-      {#each data as item}
-      <li>
-        {#if typeof item !== 'object'}
-          {item}
-        {:else}
-          <StructuredToken token={item} />
-        {/if}
-      </li>
-      {/each}
-    </ul>
-  </details>
-</div>

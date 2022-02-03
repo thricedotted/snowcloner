@@ -1,3 +1,6 @@
+<dt><slot name="title"></slot></dt>
+<dd><slot></slot></dd>
+
 <style>
   dt {
     font-weight: bold;
@@ -19,6 +22,3 @@
     margin-bottom: var(--double-gap); 
   }
 </style>
-
-<dt><slot name="title"></slot></dt>
-<dd><slot></slot></dd>

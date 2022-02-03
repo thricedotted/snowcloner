@@ -17,6 +17,20 @@
   $: shareUrl = `http${dev ? '' : 's'}://${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: template})})}`
 </script>
 
+<div class="share">
+  <b>Wanna share your snowclone? Copy the link below!</b><br>
+  <div class="copy-link">
+    <input 
+      readonly 
+      value={shareUrl}
+      >
+    <SmallButton
+      on:click={() => { copy(shareUrl); copiedUrl = shareUrl }}
+      >{buttonText}
+    </SmallButton>
+  </div>
+</div>
+
 <style>
   .share {
     font-size: var(--font-smallest);
@@ -34,17 +48,3 @@
   }
 
 </style>
-
-<div class="share">
-  <b>Wanna share your snowclone? Copy the link below!</b><br>
-  <div class="copy-link">
-    <input 
-      readonly 
-      value={shareUrl}
-      >
-    <SmallButton
-      on:click={() => { copy(shareUrl); copiedUrl = shareUrl }}
-      >{buttonText}
-    </SmallButton>
-  </div>
-</div>

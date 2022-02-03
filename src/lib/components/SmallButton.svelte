@@ -2,6 +2,12 @@
   export let style = undefined
 </script>
 
+<button
+  {style}
+  on:click
+  ><slot></slot>
+</button>
+
 <style>
   button {
     border: 0;
@@ -21,9 +27,3 @@
     color: var(--color-fg);
   }
 </style>
-
-<button
-  {style}
-  on:click
-  ><slot></slot>
-</button>

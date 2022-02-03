@@ -1,3 +1,7 @@
+<dl>
+  <slot></slot>
+</dl>
+
 <style>
   dl {
     background: var(--color-bg);
@@ -7,7 +11,3 @@
     margin-top: var(--gap);
   }
 </style>
-
-<dl>
-  <slot></slot>
-</dl>

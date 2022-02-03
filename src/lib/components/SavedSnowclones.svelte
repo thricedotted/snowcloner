@@ -7,41 +7,8 @@
 
   export let snowcloneStore
 
-  $: console.log($snowcloneStore)
+  // $: console.log($snowcloneStore)
 </script>
-
-<style>
-  .content {
-    background: var(--color-bg);
-    padding: var(--double-gap);
-    border-radius: 0.2rem;
-    margin-top: var(--gap);
-  }
-
-  h3 {
-    margin: 0;
-  }
-
-  h3:not(:first-of-type) {
-    margin-top: var(--double-gap);
-  }
-
-  ul {
-    padding-left: 0;
-    margin-top: 0;
-    margin-bottom: var(--gap);
-    list-style: square inside;
-    /* columns: 16em; */
-  }
-
-  li {
-    margin: var(--gap) 0;
-  }
-
-  li::marker {
-    color: var(--color-primary-mid);
-  }
-</style>
 
 <Details>
   <h2 slot="summary">Saved Snowclones + Examples</h2>
@@ -94,3 +61,36 @@
   </div>
 
 </Details>
+
+<style>
+  .content {
+    background: var(--color-bg);
+    padding: var(--double-gap);
+    border-radius: 0.2rem;
+    margin-top: var(--gap);
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  h3:not(:first-of-type) {
+    margin-top: var(--double-gap);
+  }
+
+  ul {
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: var(--gap);
+    list-style: square inside;
+    /* columns: 16em; */
+  }
+
+  li {
+    margin: var(--gap) 0;
+  }
+
+  li::marker {
+    color: var(--color-primary-mid);
+  }
+</style>

@@ -21,42 +21,6 @@
   $: entries = Object.entries(rawGrammar).filter(([k, v]) => !/^\$[A-Z]+\$$/.test(k))
 </script>
 
-<style>
-ul {
-  margin: var(--shim) 0;
-  padding: 0;
-  list-style: none;
-}
-
-li {
-  display: inline-block;
-  margin: 0 var(--shim);
-  padding-left: var(--shim);
-  border-radius: 0.2rem;
-  /* max-height: 3rem; */
-  overflow: auto;
-
-  font-size: var(--font-smallest);
-  border: 0.1rem solid currentColor;
-  background: var(--color-primary-light);
-  color: var(--color-primary-dark);
-}
-
-details:not([open]) {
-  margin-bottom: var(--shim);
-}
-
-.empty-grammar::before {
-  content: '← ';
-}
-
-@media screen and (max-width: 40rem) {
-  .empty-grammar::before {
-    content: '↑ ';
-  }
-}
-</style>
-
 <details open>
 <summary><h2>Grammar</h2> ({entries.length})</summary>
 
@@ -97,3 +61,39 @@ details:not([open]) {
   </ul>
 {/if}
 </details>
+
+<style>
+  ul {
+    margin: var(--shim) 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 var(--shim);
+    padding-left: var(--shim);
+    border-radius: 0.2rem;
+    /* max-height: 3rem; */
+    overflow: auto;
+
+    font-size: var(--font-smallest);
+    border: 0.1rem solid currentColor;
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+  }
+
+  details:not([open]) {
+    margin-bottom: var(--shim);
+  }
+
+  .empty-grammar::before {
+    content: '← ';
+  }
+
+  @media screen and (max-width: 40rem) {
+    .empty-grammar::before {
+      content: '↑ ';
+    }
+  }
+</style>

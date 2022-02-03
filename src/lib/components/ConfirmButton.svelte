@@ -20,6 +20,15 @@
   }
 </script>
 
+<button 
+  {style}
+  {title}
+  class:confirming
+  on:click|stopPropagation={confirmOrDelete}
+  on:blur={() => confirming = false}
+  ><slot {confirming}></slot>
+</button>
+
 <style>
   button {
     font-size: var(--font-smallest);
@@ -39,12 +48,3 @@
     color: var(--color-bg);
   }
 </style>
-
-<button 
-  {style}
-  {title}
-  class:confirming
-  on:click|stopPropagation={confirmOrDelete}
-  on:blur={() => confirming = false}
-  ><slot {confirming}></slot>
-</button>
