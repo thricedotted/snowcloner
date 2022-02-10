@@ -2,6 +2,7 @@
   import Details from '$lib/components/Details.svelte'
   import DefinitionList from '$lib/components/DefinitionList.svelte'
   import Definition from '$lib/components/Definition.svelte'
+import { tick } from 'svelte'
 </script>
 
 <Details>
@@ -21,7 +22,7 @@
       <span slot="title">How was Snowcloner made?</span>
 
       <p>
-        The two most important components of Snowcloner (after you, the author of the snowclone 😊) are <a href="https://github.com/dariusk/corpora">Corpora</a> and <a href="https://tracery.io/">Tracery</a>, which we rely on for the data and the text generation framework, respectively. Snowcloner exists because I wanted to bring these two powerful resources together in a novel and accessible way!
+        The two most important components of Snowcloner (after you, the author of the snowclone 😊) are <a href="https://github.com/dariusk/corpora">Corpora</a> and <a href="https://tracery.io/">Tracery</a>, which we rely on for the data and the text generation framework, respectively. Snowcloner exists because I wanted to bring these two resources together in a novel and accessible way!
       </p>
 
       <p>
@@ -34,7 +35,7 @@
       <span slot="title">Who made Snowcloner?</span>
 
       <p>
-        ME hahaha TODO......
+        My name is Li (they/them, rhymes with &ldquo; &rdquo;)! You can check out other things I've made on my <a href="https://entangled.one">personal website</a>, and tell me how much you like this / ask me questions / bug me about bugs on Twitter, where I'm <a href="https://twitter.com/thricedotted">@thricedotted</a>.
       </p>
     </Definition>
 
