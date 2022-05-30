@@ -2,7 +2,6 @@
 	import qs from 'qs'
   import copy from 'clipboard-copy'
 
-  import { dev } from '$app/env'
   import { page } from '$app/stores'
 	import { encodeObject } from '$lib/util'
 
@@ -14,7 +13,7 @@
 
   $: buttonText = copiedUrl === shareUrl ? 'copied!' : 'copy'
 
-  $: shareUrl = `http${dev ? '' : 's'}://${$page.host}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: template})})}`
+  $: shareUrl = `${$page.url.origin}?${qs.stringify({g: encodeObject({...corporaTokens, $TEMPLATE$: template})})}`
 </script>
 
 <div class="share">

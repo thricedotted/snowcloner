@@ -35,10 +35,10 @@
 		return rawGrammar
 	}
 
-	export async function load({ page, fetch }) {
-		const { query } = page
+	export async function load({ url, fetch }) {
+		const { searchParams } = url
 
-		const corporaTokens = decodeObject(query.get('g')) || defaultTokens
+		const corporaTokens = decodeObject(searchParams.get('g')) || defaultTokens
 
 		const initialGrammar = await loadCorpora(corporaTokens, fetch)
 
